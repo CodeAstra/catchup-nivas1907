@@ -1,9 +1,16 @@
+
 <h1>posts page</h1>
 <%= button_to "Add a post", new_post_path, method: :get %>
 <% @posts.each do |p| %>
-<p><%= @user.find(p.user_id).username %></p>
+<p><%= p.user.username %></p>
 <p>Title:<%= p.title %></p>
 <p>description:<%= p.description %></p>
+<% if p.like.exists?(user_id:current_user) %>
+    <%= button_to "Unlike",post_like_path(post_id: p.id,id: p.like.find_by(user_id: current_user.id).id),method: :delete %>
+<%else%>
+     <%= button_to "Like",post_like_index_path(p.id),method: :post %>
+<%end%>
+<%= p.like.count %>
 <% if p.user_id==current_user.id %>
     <%= button_to "edit",edit_post_path(p.id),method: :get %>
     <%= button_to "delete",post_path(p.id),method: :delete %>
