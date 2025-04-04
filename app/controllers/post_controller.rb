@@ -4,6 +4,9 @@ class PostController < ApplicationController
 def index
   @posts=Post.all
   @user=User.all
+  @user_posts=@posts.where(user_id: current_user.id).order(created_at: :desc)
+  @other_posts=@posts.where.not(user_id: current_user.id).order(created_at: :desc)
+  @posts=@user_posts+@other_posts
 end
   def new
     @post=Post.new
@@ -25,7 +28,11 @@ end
     @post=Post.find(params[:id])
   end
   def destroy
-    
+    @user=current_user
+    @post=@user.posts.find(params[:id])
+      if @post.destroy
+        redirect_to post_index_path
+      end
   end
   def post_params
     params.require(:post).permit(:title, :description)
