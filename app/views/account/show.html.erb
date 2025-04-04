@@ -1,0 +1,7 @@
+<h1>name:<%=current_user.username%> </h1>
+<h1>mail:<%=current_user.email%> </h1>
+<p>Bio:<%=current_user.bio%></p>
+<% if current_user.avatar.attached %>
+<img src="<%=url_for(current_user.avatar)%>" class="avatar" />
+<%end%>
+<%= button_to "edit" ,edit_account_path(current_user),method: :get %>
