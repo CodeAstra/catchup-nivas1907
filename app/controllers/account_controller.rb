@@ -1,5 +1,7 @@
 class AccountController < ApplicationController
   def show
+    @posts=Post.where(user_id: current_user.id).order(created_at: :desc)
+    @like=Like.all
   end
   def update
     @user=User.find(params[:id])

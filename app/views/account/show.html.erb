@@ -5,3 +5,10 @@
 <img src="<%=url_for(current_user.avatar)%>" class="avatar" />
 <%end%>
 <%= button_to "edit" ,edit_account_path(current_user),method: :get %>
+<p>Post count: <%= @posts.count %> </p>
+<h1>Your's Post's</h1>
+<% @posts.each do |p| %>
+    <p>Title:<%= p.title %></p>
+    <p>description:<%= p.description %></p>
+    <p>Likes: <%= p.like.count %> </p>
+<%end%>
