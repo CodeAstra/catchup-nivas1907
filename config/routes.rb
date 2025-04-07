@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "/search" , to: "friend#search"
   post "/create", to: "post#create"
   devise_for :users, controllers: { sessions: "users/sessions", registrations: "users/registrations" }
   resources :users
