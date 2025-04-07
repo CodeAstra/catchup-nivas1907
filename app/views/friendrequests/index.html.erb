@@ -1,0 +1,15 @@
+<% @pending_list.each do |p| %>
+ <%u=p.user%>
+<% if u.avatar.attached? %>
+<img src="<%=url_for(u.avatar)%>" class="avatar" />
+<h1></h1>
+<%end%>
+    <%= link_to  (
+    u.username||u.email
+    ), account_path(u.id) , method: :get %>
+<h1></h1>
+<%= button_to "accept",friendrequest_path(p.id),method: :patch %>
+<%= button_to "reject",friendrequest_path(p.id),method: :delete %>
+<p>sent <%= time_ago_in_words(p.updated_at) %> ago </p>
+<h1></h1>
+<%end%>

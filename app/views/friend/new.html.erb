@@ -1,0 +1,18 @@
+<% @user.each do |u| %>
+<% if checkf(u.id) %>
+<% if u.avatar.attached? %>
+<img src="<%=url_for(u.avatar)%>" class="avatar" />
+<h1></h1>
+<%end%>
+    <%= link_to  (
+    u.username||u.email
+    ), account_path(u.id) , method: :get %>
+<h1></h1>
+<% if check(u.id) %>
+    <%= button_to "Pending" %>
+<%else%>
+    <%= button_to "Add Friend",friend_index_path(fid:u.id),method: :post %>
+<%end%>
+<h1></h1>
+<%end%>
+<%end%>

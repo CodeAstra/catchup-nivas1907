@@ -4,8 +4,18 @@
 <% if @user.avatar.attached? %>
 <img src="<%=url_for(@user.avatar)%>" class="avatar" />
 <%end%>
-<% if current_user = @user %>
+<% if current_user.id ==  @user.id %>
 <%= button_to "edit" ,edit_account_path(current_user.id),method: :get %>
+<% else %>
+    <% if pendingrequest(@user.id) %>
+        <% idi=getid(@user.id)  %>
+        <%= button_to "accept",friendrequest_path(idi),method: :patch %>
+        <%= button_to "reject",friendrequest_path(idi),method: :delete %>
+    <% elsif sentrequest(@user.id) %>
+        <%= button_to "pending" %>
+    <% elsif !notfriend(@user.id) %>
+        <%= button_to "Add Friend",friend_index_path(fid:@user.id),method: :post %>
+    <%end%>
 <%end%>
 <p>Post count: <%= @posts.count %> </p>
 <h1>Your's Post's</h1>

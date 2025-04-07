@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   resources :account, only: [ :show, :edit, :update ]
   resources :post, only: [ :index, :edit, :new, :destroy, :update ] do
     resources :like, only: [ :destroy, :create ]
-  end 
+  end
+  resources :friend, only: [ :index, :show, :new, :create ]
+  resources :friendrequests, only: [ :index, :update,  :destroy ]
   get "up" => "rails/health#show", as: :rails_health_check
   root to: "home#index"
 end

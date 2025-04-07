@@ -1,0 +1,15 @@
+<%= button_to "Add Friends",new_friend_path,method: :get %>
+<%= button_to "Pending Requests(#{@pending_list_count})",friendrequests_path,method: :get %>
+
+<% @friends_list.each do |f| %>
+<%u=f.user%>
+<% if u.avatar.attached? %>
+<img src="<%=url_for(u.avatar)%>" class="avatar" />
+<h1></h1>
+<%end%>
+    <%= link_to  (
+    u.username||u.email
+    ), account_path(u.id) , method: :get %>
+<p>Friend Since <%= time_ago_in_words(f.updated_at) %> </p>
+<h1></h1>
+<%end%>
