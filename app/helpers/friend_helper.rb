@@ -16,4 +16,11 @@ module FriendHelper
       true
     end
   end
+  def pendingrequest(id)
+    val=Friend.exists?(user_id: id, friend_id: current_user.id, status: "pending")
+    val
+  end
+  def getid(id)
+    Friend.where(user_id: id, friend_id: current_user.id, status: "pending").first
+  end
 end
