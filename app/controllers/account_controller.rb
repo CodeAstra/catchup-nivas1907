@@ -15,8 +15,9 @@ class AccountController < ApplicationController
     end
   end
   def privacy
+    val=(params[:user][:privacy_status].to_i)
     @user=User.find(current_user.id)
-    @user.update(privacy_status: params[:privacy_status])
+    @user.update(privacy_status: val)
   end
   def edit
     @user=User.find(params[:id])
