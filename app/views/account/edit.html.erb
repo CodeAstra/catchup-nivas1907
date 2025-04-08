@@ -1,6 +1,7 @@
 <%= form_with model: @user,url:account_path, method: :patch do |f| %>
    <%= f.label :username, placeholder: "username", :class => "form_control"%>
    <%= f.text_field :username %>
+   <%= f.select :status, ["public", "private", "protected"] , selected: @user.status %>
    <%= f.label "bio", placeholder: "bio", :class => "form_box"%>
    <%= f.text_field :bio %>
    <%= f.file_field :avatar %>
