@@ -10,8 +10,8 @@ module AccountHelper
     val=Friend.exists?(user_id: current_user.id, friend_id: id, status: "pending")
     val
   end
-  def notfriend(id)
-    val=Friend.exists?(user_id: current_user.id, friend_id: id)&&Friend.exists(user_id: id, friend_id: current_user.id)
+  def isfriend(id)
+    val=Friend.exists?(user_id: current_user.id, friend_id: id, status: "accepted")||Friend.exists?(user_id: id, friend_id: current_user.id, status: "accepted")
     val
   end
 end

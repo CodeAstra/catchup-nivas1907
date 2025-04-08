@@ -11,17 +11,16 @@ class FriendController < ApplicationController
 
   def search
     @input=params[:search]
-    if params[:index]==1
       @friends_ids=Friend.where(user_id: current_user.id, status: "accepted").pluck(:friend_id)+Friend.where(friend_id: current_user.id, status: "accepted").pluck(:user_id)
       @users=User.where(id: @friends_ids)
-      @users=@users.where("users.username LIKE ?", [ "%#{@input}%" ])
+      @users=@users.where("users.username LIKE ?", [ "%#{@input}%" ]).or(@users.where("email LIKE ? ", "%#{@input}%"))
       render "index"
-
-    else
-      @user=User.where.not(id: current_user.id).where.not(id: current_user.friends.where(status: "accepted").pluck(:friend_id))
-      @user=@user.where("username LIKE ? ", "%#{@input}%") 
+  end
+  def search2
+    @input=params[:search]
+    @user=User.where.not(id: current_user.id).where.not(id: current_user.friends.where(status: "accepted").pluck(:friend_id))
+      @user=@user.where("username LIKE ? ", "%#{@input}%").or(@user.where("email LIKE ? ", "%#{@input}%"))
       render "new"
-    end
   end
 
   def new

@@ -13,11 +13,12 @@
         <%= button_to "reject",friendrequest_path(idi),method: :delete %>
     <% elsif sentrequest(@user.id) %>
         <%= button_to "pending" %>
-    <% elsif !notfriend(@user.id) %>
+    <% elsif !isfriend(@user.id) %>
         <%= button_to "Add Friend",friend_index_path(fid:@user.id),method: :post %>
     <%end%>
 <%end%>
 <p>Post count: <%= @posts.count %> </p>
+<p>Friends count: <%= @friends_count %> </p>
 <h1>Your's Post's</h1>
 <% @posts.each do |p| %>
     <p>Title:<%= p.title %></p>

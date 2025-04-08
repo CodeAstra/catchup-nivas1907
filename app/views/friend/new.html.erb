@@ -1,9 +1,9 @@
-<%= form_with url: search_path(index: 2), method: :get do |f| %>
+<%= form_with url: searchfriend_path, method: :get do |f| %>
    <%= f.text_field :search, value: params[:search]  %>
    <%= f.submit "Search" %>
-<% end %>
+<%end%>
 <% @user.each do |u| %>
-
+<% if checkf(u.id) %>
 <% if u.avatar.attached? %>
 <img src="<%=url_for(u.avatar)%>" class="avatar" />
 <h1></h1>
@@ -22,5 +22,5 @@
     <%= button_to "Add Friend",friend_index_path(fid:u.id),method: :post %>
 <%end%>
 <h1></h1>
-
+<%end%>
 <%end%>

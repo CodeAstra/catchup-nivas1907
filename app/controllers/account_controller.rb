@@ -3,6 +3,7 @@ class AccountController < ApplicationController
     @user=User.find(params[:id])
     @posts=Post.where(user_id: @user).order(created_at: :desc)
     @like=Like.all
+    @friends_count=Friend.where(user_id: @user.id,status: "accepted").count+Friend.where(friend_id: @user.id,status: "accepted").count
   end
   def update
     @user=User.find(params[:id])
