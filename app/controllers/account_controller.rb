@@ -14,10 +14,14 @@ class AccountController < ApplicationController
       redirect_to edit_account_path
     end
   end
+  def privacy
+    @user=User.find(current_user.id)
+    @user.update(privacy_status: params[:privacy_status])
+  end
   def edit
     @user=User.find(params[:id])
   end
   def permit
-    params.require(:user).permit(:username, :bio, :avatar, :status)
+    params.require(:user).permit(:username, :bio, :avatar, :status, :privacy_status)
   end
 end

@@ -6,4 +6,5 @@ class User < ApplicationRecord
   has_many :friends
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+  enum :privacy_status , { public_state: 0, private_state: 1, protected_state: 2 }
 end

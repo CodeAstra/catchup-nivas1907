@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
+  get "trending/index"
   get "/search" , to: "friend#search"
   get "/searchfriend", to: "friend#search2"
   post "/create", to: "post#create"
+  patch "/privacyupdate", to: "account#privacy"
   devise_for :users, controllers: { sessions: "users/sessions", registrations: "users/registrations" }
   resources :users
   resources :account, only: [ :show, :edit, :update ]
