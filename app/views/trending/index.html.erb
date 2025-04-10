@@ -15,7 +15,7 @@
 <% if p.like.exists?(user_id:current_user) %>
     <%= button_to "Unlike",post_like_path(post_id: p.id,id: p.like.find_by(user_id: current_user.id).id),method: :delete %>
 <%else%>
-     <%= button_to "Like",post_like_index_path(p.id),method: :post %>
+     <%= button_to "Like",post_likes_path(p.id),method: :post %>
 <%end%>
 <%= p.like.count %>
 <%end%>

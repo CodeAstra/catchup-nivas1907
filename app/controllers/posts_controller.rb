@@ -16,7 +16,7 @@ end
   def update
     @post=Post.find(params[:id])
     if @post.update(post_params)
-      redirect_to post_index_path
+      redirect_to posts_path
     end
   end
   def create
@@ -24,7 +24,7 @@ end
     @post=@user.posts.create(post_params)
     if @post.save
       respond_to do |format|
-        format.html { redirect_to post_index_path }
+        format.html { redirect_to posts_path }
         format.turbo_stream
       end
     end
@@ -37,7 +37,7 @@ end
     @post=@user.posts.find(params[:id])
       if @post.destroy
         respond_to do |format|
-          format.html { redirect_to post_index_path }
+          format.html { redirect_to posts_path }
           format.turbo_stream
         end
       end

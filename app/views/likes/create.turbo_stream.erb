@@ -1,0 +1,4 @@
+<%=turbo_stream.replace "like_#{@post.id}" do %>
+    <%= button_to "Unlike",post_like_path(post_id: @post.id,id: @like.id),method: :delete %>
+     <%= render partial: "like",locals: {post: @post} %>
+<%end%>
