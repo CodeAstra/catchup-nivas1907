@@ -1,3 +1,4 @@
+<%= turbo_frame_tag "account_#{current_user.id}" do  %>
 <h1>name:<%=@user.username%> </h1>
 <h1>mail:<%=@user.email%> </h1>
 <p>Bio:<%=@user.bio%></p>
@@ -5,11 +6,11 @@
 <img src="<%=url_for(@user.avatar)%>" class="avatar" />
 <%end%>
 <% if current_user.id ==  @user.id %>
-<%= button_to "edit" ,edit_account_path(current_user.id),method: :get %>
-<%=form_with model: @user ,url:privacyupdate_path,method: :patch do |f| %>
- <%= f.select :privacy_status, User.privacy_statuses, selected: @user.privacy_status %>
- <%= f.submit %>
-<%end%>
+    <%= button_to "edit" ,edit_account_path(current_user.id),method: :get %>
+    <%=form_with model: @user ,url:privacyupdate_path,method: :patch do |f| %>
+        <%= f.select :privacy_status, User.privacy_statuses, selected: @user.privacy_status %>
+        <%= f.submit %>
+    <%end%>
 
 <% else %>
     <% if pendingrequest(@user.id) %>
@@ -19,17 +20,18 @@
     <% elsif sentrequest(@user.id) %>
         <%= button_to "pending" %>
     <% elsif !isfriend(@user.id) %>
-        <%= button_to "Add Friend",friend_index_path(fid:@user.id),method: :post %>
+            <%= button_to "Add Friend",friend_index_path(fid:@user.id),method: :post %>
     <%end%>
+<%end%>
 <%end%>
 <p>Post count: <%= @posts.count %> </p>
 <p>Friends count: <%= @friends_count %> </p>
 
 <%if canishow(@user.id) %>
-<h1>Your's Post's</h1>
-<% @posts.each do |p| %>
-    <p>Title:<%= p.title %></p>
-    <p>description:<%= p.description %></p>
-    <p>Likes: <%= p.like.count %> </p>
-<%end%>
+    <h1>Your's Post's</h1>
+    <% @posts.each do |p| %>
+        <p>Title:<%= p.title %></p>
+        <p>description:<%= p.description %></p>
+        <p>Likes: <%= p.like.count %> </p>
+    <%end%>
 <%end%>

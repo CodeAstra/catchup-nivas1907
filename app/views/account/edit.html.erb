@@ -1,3 +1,4 @@
+<%= turbo_frame_tag "account_#{current_user.id}" do %>
 <%= form_with model: @user,url:account_path, method: :patch do |f| %>
    <%= f.label :username, placeholder: "username", :class => "form_control"%>
    <%= f.text_field :username %>
@@ -5,4 +6,5 @@
    <%= f.text_field :bio %>
    <%= f.file_field :avatar %>
    <%= f.submit %>    
+<% end %>
 <% end %>

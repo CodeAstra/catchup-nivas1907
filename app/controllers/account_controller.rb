@@ -8,8 +8,11 @@ class AccountController < ApplicationController
   def update
     @user=User.find(params[:id])
 
-    if @user.update(permit)
-      redirect_to account_path(params[:id])
+    if @user.update(permit)  
+      respond_to do |format|
+        format.html { redirect_to account_path(params[:id]) }
+        format.turbo_stream
+      end
     else
       redirect_to edit_account_path
     end

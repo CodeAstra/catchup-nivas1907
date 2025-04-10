@@ -14,9 +14,14 @@ end
     @post=Post.new
   end
   def update
+    @user=current_user
+  
     @post=Post.find(params[:id])
     if @post.update(post_params)
-      redirect_to posts_path
+      respond_to do |format|
+        format.html { redirect_to posts_path }
+        format.turbo_stream
+      end
     end
   end
   def create
