@@ -1,0 +1,24 @@
+<%=turbo_frame_tag "post_#{post.id}" do %>
+<%= link_to  (
+    post.user.username
+    ), account_path(post.user_id) , method: :get %>
+<% if post.user.avatar.attached? %>
+<img src="<%=url_for(post.user.avatar)%>" class="avatar" />
+<%end%>
+<p>Title:<%= post.title %></p>
+<%= time_ago_in_words(post.created_at) %>
+<p>description:<%= post.description %></p>
+<% if post.like.exists?(user_id:current_user) %>
+    <%= button_to "Unlike",post_like_path(post_id: post.id,id: post.like.find_by(user_id: current_user.id).id),method: :delete %>
+<%else%>
+     <%= button_to "Like",post_like_index_path(post.id),method: :post %>
+<%end%>
+<p style="display:flex;">Like count:<%= post.like.count %></p>
+<% if post.user_id==current_user.id %>
+    
+        <%= button_to "edit",edit_post_path(post.id),method: :get %>
+        <%= button_to "delete",post_path(post.id),method: :delete %>
+   
+<%end%>
+ <%end%>
+<br>

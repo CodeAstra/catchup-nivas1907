@@ -1,4 +1,4 @@
-class PostController < ApplicationController
+class PostsController < ApplicationController
   def show
   end
 def index
@@ -23,7 +23,10 @@ end
     @user=current_user
     @post=@user.posts.create(post_params)
     if @post.save
-      redirect_to post_index_path
+      respond_to do |format|
+        format.html { redirect_to post_index_path }
+        format.turbo_stream
+      end
     end
   end
   def edit
@@ -33,7 +36,10 @@ end
     @user=current_user
     @post=@user.posts.find(params[:id])
       if @post.destroy
-        redirect_to post_index_path
+        respond_to do |format|
+          format.html { redirect_to post_index_path }
+          format.turbo_stream
+        end
       end
   end
   def post_params

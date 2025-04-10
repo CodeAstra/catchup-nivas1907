@@ -1,7 +1,9 @@
-<%= form_with model: @post,url: post_path, method: :patch do |f| %>
+<%= turbo_frame_tag @post do %>
+<%= form_with model: @post,url: create_path, method: :post do |f| %>
    <%= f.label :title, placeholder: "title", :class => "form_control"%>
    <%= f.text_field :title %>
    <%= f.label "description", placeholder: "description", :class => "form_box"%>
    <%= f.text_field :description %>
    <%= f.submit %>
+<% end %>
 <% end %>
