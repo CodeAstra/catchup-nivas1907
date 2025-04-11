@@ -13,6 +13,7 @@ class FriendrequestsController < ApplicationController
     end
   end
   def destroy
+    
     @user=User.find(params[:user_id])
     if Friend.destroy(params[:id])
       respond_to do |format|

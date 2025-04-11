@@ -1,5 +1,15 @@
-<%= turbo_stream.replace"friendbutton_#{@user.id}" do%>
-    <%= turbo_frame_tag "fbutton_#{@user.id}" do %>
-         <%= button_to "Add Friend",friends_path(fid:@user.id),method: :post %>
+<% if request.referer == "http://localhost:3000/friends/new" %>
+    <%= turbo_stream.replace"friendbutton_#{@user.id}" do%>
+        <%= turbo_frame_tag "fbutton_#{@user.id}" do %>
+             <%= button_to "Add Friend",friends_path(fid:@user.id),method: :post %>
+        <%end%>
     <%end%>
+<%elsif request.referer ==  "http://localhost:3000/account/#{params[:user_id]}" %>
+    <%= turbo_stream.replace "accountpage_#{params[:user_id]}" do%>
+        <%= turbo_frame_tag "fbutton_#{@user.id}" do %>
+             <%= button_to "Add Friend",friends_path(fid:@user.id),method: :post %>
+        <%end%>
+    <%end%>
+<% else %>
+    <%= turbo_stream.remove "pendingpage_#{@user.id}" %>
 <%end%>

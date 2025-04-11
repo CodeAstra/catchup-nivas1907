@@ -1,1 +1,7 @@
-<%= turbo_stream.remove "friends_#{params[:user_id]}"%>
+<% if request.referer == "http://localhost:3000/friends/new" %>
+    <%= turbo_stream.remove "friends_#{params[:user_id]}"%>
+<%elsif request.referer ==  "http://localhost:3000/account/#{params[:user_id]}" %>
+    <%= turbo_stream.remove "accountpage_#{params[:user_id]}"  %>
+<% else %>
+    <%= turbo_stream.remove "pendingpage_#{params[:user_id]}" %>
+<%end%>
