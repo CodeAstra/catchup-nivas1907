@@ -11,7 +11,7 @@
     <%end%>
     <%= link_to  (
     u.username||u.email
-    ), account_path(u.id) , method: :get %>
+    ), account_path(u.id) , method: :get, data: { turbo_frame: "_top" } %>
 <h1></h1>
     <%= turbo_frame_tag "friendbutton_#{u.id}" do%>
         <% if check(u.id) %>

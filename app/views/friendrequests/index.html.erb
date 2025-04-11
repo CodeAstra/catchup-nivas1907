@@ -7,7 +7,7 @@
         <%end%>
         <%= link_to  (
         u.username||u.email
-        ), account_path(u.id) , method: :get %>
+        ), account_path(u.id) , method: :get , data: { turbo_frame: "_top" } %>
         <h1></h1>
         <%= button_to "accept",friendrequest_path(p.id,user_id: u.id),method: :patch %>
         <%= button_to "reject",friendrequest_path(p.id,user_id: u.id),method: :delete %>

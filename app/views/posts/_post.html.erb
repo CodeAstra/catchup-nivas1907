@@ -1,7 +1,7 @@
 <%=turbo_frame_tag "post_#{post.id}" do %>
 <%= link_to  (
     post.user.username
-    ), account_path(post.user_id) , method: :get %>
+    ), account_path(post.user_id) , method: :get , data: { turbo_frame: "_top" } %>
 <% if post.user.avatar.attached? %>
 <img src="<%=url_for(post.user.avatar)%>" class="avatar" />
 <%end%>
