@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   get "/search" , to: "friend#search"
   get "/searchfriend", to: "friend#search2"
   post "/create", to: "posts#create"
+  get "/cancelpost", to: "posts#cancel"
+  get "/cancelaccount", to: "account#cancel"
   patch "/privacyupdate", to: "account#privacy"
   devise_for :users, controllers: { sessions: "users/sessions", registrations: "users/registrations" }
   resources :users

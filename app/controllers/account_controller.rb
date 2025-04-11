@@ -8,7 +8,7 @@ class AccountController < ApplicationController
   def update
     @user=User.find(params[:id])
 
-    if @user.update(permit)  
+    if @user.update(permit)
       respond_to do |format|
         format.html { redirect_to account_path(params[:id]) }
         format.turbo_stream
@@ -20,7 +20,19 @@ class AccountController < ApplicationController
   def privacy
     val=(params[:user][:privacy_status].to_i)
     @user=User.find(current_user.id)
-    @user.update(privacy_status: val)
+    if @user.update(privacy_status: val)
+      respond_to do |format|
+        format.html { redirect_to account_path(params[:id]) }
+        format.turbo_stream
+      end
+    end
+  end
+  def cancel
+    @user=User.find(current_user.id)
+    respond_to do |format|
+      format.html { redirect_to account_path(current_user.id) }
+      format.turbo_stream
+    end
   end
   def edit
     @user=User.find(params[:id])

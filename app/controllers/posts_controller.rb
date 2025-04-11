@@ -24,6 +24,12 @@ end
       end
     end
   end
+  def cancel
+    respond_to do |format|
+      format.html { redirect_to posts_path }
+      format.turbo_stream
+    end
+  end
   def create
     @user=current_user
     @post=@user.posts.create(post_params)
