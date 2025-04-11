@@ -1,7 +1,7 @@
-module FriendHelper
+module FriendsHelper
   def check(id)
    @friend=Friend.all
-   if @friend.exists?(friend_id: id, status: "pending")
+   if @friend.exists?(user_id: current_user.id, friend_id: id, status: "pending")
      true
    else
       false

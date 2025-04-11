@@ -6,12 +6,19 @@ class FriendrequestsController < ApplicationController
 
   def update
     if Friend.find(params[:id]).update(status: "accepted")
-      redirect_to friend_index_path
+      respond_to do |format|
+        format.html { redirect_to friends_path }
+        format.turbo_stream
+      end
     end
   end
   def destroy
+    @user=User.find(params[:user_id])
     if Friend.destroy(params[:id])
-      redirect_to friend_index_path
+      respond_to do |format|
+        format.html { redirect_to friends_path }
+        format.turbo_stream
+      end
     end
   end
 end

@@ -1,4 +1,4 @@
-class FriendController < ApplicationController
+class FriendsController < ApplicationController
   def index
     @friends_ids=Friend.where(user_id: current_user.id, status: "accepted").pluck(:friend_id)+Friend.where(friend_id: current_user.id, status: "accepted").pluck(:user_id)
     @pending_list=Friend.where(friend_id: current_user, status: "pending")
@@ -28,6 +28,11 @@ class FriendController < ApplicationController
   end
 
   def create
+    @user=User.find(params[:fid])
     Friend.create(friend_id: params[:fid], user_id: current_user.id, status: "pending")
+    respond_to do |format|
+      format.html { redirect_to new_friend_path }
+      format.turbo_stream
+    end
   end
 end
