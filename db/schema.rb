@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_08_092016) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_14_092719) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -63,6 +63,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_092016) do
     t.string "title"
     t.string "description"
     t.integer "user_id", null: false
+    t.integer "likes_count", default: 0, null: false
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
@@ -76,7 +77,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_092016) do
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
     t.string "bio"
-    t.string "status", default: "public"
     t.integer "privacy_status", default: 0
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
