@@ -18,8 +18,8 @@
         <% if pendingrequest(@user.id) %>
             <% idi=getid(@user.id)  %>
             <%= turbo_frame_tag "accountpage_#{@user.id}" do%>
-                <%= button_to "accept",friendrequest_path(idi,user_id: @user.id),method: :patch %>
-                <%= button_to "reject",friendrequest_path(idi,user_id: @user.id),method: :delete %>
+                <%= button_to "accept",friendrequest_path(idi,sender_id: @user.id),method: :patch %>
+                <%= button_to "reject",friendrequest_path(idi,sender_id: @user.id),method: :delete %>
             <%end%>
         <% elsif sentrequest(@user.id) %>
             <%= button_to "pending" %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_14_092719) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_14_101615) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -39,14 +39,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_14_092719) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "friends", force: :cascade do |t|
+  create_table "friendships", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id", null: false
+    t.integer "sender_id", null: false
     t.string "status"
-    t.integer "friend_id"
-    t.index ["friend_id"], name: "index_friends_on_friend_id"
-    t.index ["user_id"], name: "index_friends_on_user_id"
+    t.integer "reciver_id"
+    t.index ["reciver_id"], name: "index_friendships_on_reciver_id"
+    t.index ["sender_id"], name: "index_friendships_on_sender_id"
   end
 
   create_table "likes", force: :cascade do |t|
@@ -84,8 +84,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_14_092719) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "friends", "users"
-  add_foreign_key "friends", "users", column: "friend_id"
+  add_foreign_key "friendships", "users", column: "reciver_id"
+  add_foreign_key "friendships", "users", column: "sender_id"
   add_foreign_key "likes", "posts"
   add_foreign_key "posts", "users"
 end

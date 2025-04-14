@@ -3,7 +3,7 @@ class AccountController < ApplicationController
     @user=User.find(params[:id])
     @posts=Post.where(user_id: @user).order(created_at: :desc)
     @like=Like.all
-    @friends_count=Friend.where(user_id: @user.id, status: "accepted").count+Friend.where(friend_id: @user.id, status: "accepted").count
+    @friends_count=Friendship.where(sender_id: @user.id, status: "accepted").count+Friendship.where(reciver_id: @user.id, status: "accepted").count
   end
   def update
     @user=User.find(params[:id])
@@ -22,7 +22,7 @@ class AccountController < ApplicationController
     @user=User.find(current_user.id)
     if @user.update(privacy_status: val)
       respond_to do |format|
-        format.html { redirect_to account_path(params[:id]) , notice: "privacy option is successfully updated."  }
+        format.html { redirect_to account_path(params[:id]), notice: "privacy option is successfully updated."  }
         format.turbo_stream { flash[:notice] = "Privacy option is successfully updated." }
       end
     end
