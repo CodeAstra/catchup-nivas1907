@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   get "trending/index"
-  get "/search" , to: "friends#search"
+  get "/search", to: "friends#search"
   get "/searchfriend", to: "friends#search2"
   post "/create", to: "posts#create"
   get "/cancelpost", to: "posts#cancel"

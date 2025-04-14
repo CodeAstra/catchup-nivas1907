@@ -1,5 +1,5 @@
 <%=turbo_stream.replace  "like_#{@post.id}" do %>
     <%= button_to "Like",post_likes_path(@post.id),method: :post %>
-      <%= render partial: "like",locals: {post: @post} %>
+    <%= render partial: "like",locals: {post: @post} %>
 <%end%>
 <%= render_turbo_stream_flash_message %>

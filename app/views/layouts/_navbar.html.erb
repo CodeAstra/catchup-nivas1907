@@ -1,7 +1,6 @@
 <div class="container">
     <nav>
     <ul>
-
         <li><%= link_to "Home" , "/" %></li>
         <%if current_user%>
             <li><%= button_to "Log out" , destroy_user_session_path ,method: :delete%></li>

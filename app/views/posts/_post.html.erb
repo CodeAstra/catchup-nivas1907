@@ -1,26 +1,24 @@
 <%=turbo_frame_tag "post_#{post.id}" do %>
-<%= link_to  (
-    post.user.username
-    ), account_path(post.user_id) , method: :get , data: { turbo_frame: "_top" } %>
-<% if post.user.avatar.attached? %>
-<img src="<%=url_for(post.user.avatar)%>" class="avatar" />
-<%end%>
-<p>Title:<%= post.title %></p>
-<%= time_ago_in_words(post.created_at) %>
-<p>description:<%= post.description %></p>
-<%=turbo_frame_tag "like_#{post.id}" do %>
-<% if post.like.exists?(user_id:current_user) %>
-    <%= button_to "Unlike",post_like_path(post_id: post.id,id: post.like.find_by(user_id: current_user.id).id),method: :delete %>
-<%else%>
-     <%= button_to "Like",post_likes_path(post.id),method: :post %>
-<%end%>
- <%= render partial: "likes/like",locals: {post: post} %>
-<%end%>
-<% if post.user_id==current_user.id %>
-    
+    <%= link_to  (
+        post.user.username
+        ), account_path(post.user_id) , method: :get , data: { turbo_frame: "_top" } %>
+    <% if post.user.avatar.attached? %>
+        <img src="<%=url_for(post.user.avatar)%>" class="avatar" />
+    <%end%>
+    <p>Title:<%= post.title %></p>
+    <%= time_ago_in_words(post.created_at) %>
+    <p>description:<%= post.description %></p>
+    <%=turbo_frame_tag "like_#{post.id}" do %>
+        <% if post.like.exists?(user_id:current_user) %>
+            <%= button_to "Unlike",post_like_path(post_id: post.id,id: post.like.find_by(user_id: current_user.id).id),method: :delete %>
+        <%else%>
+            <%= button_to "Like",post_likes_path(post.id),method: :post %>
+        <%end%>
+        <%= render partial: "likes/like",locals: {post: post} %>
+    <%end%>
+    <% if post.user_id==current_user.id %>    
         <%= button_to "edit",edit_post_path(post.id),method: :get %>
         <%= button_to "delete",post_path(post.id),method: :delete %>
-   
+    <%end%>
+    <br>
 <%end%>
-<br>
- <%end%>
