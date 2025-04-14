@@ -2,3 +2,4 @@
     <%= button_to "Unlike",post_like_path(post_id: @post.id,id: @like.id),method: :delete %>
      <%= render partial: "like",locals: {post: @post} %>
 <%end%>
+<%= render_turbo_stream_flash_message %>

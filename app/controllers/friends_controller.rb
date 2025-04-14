@@ -31,8 +31,8 @@ class FriendsController < ApplicationController
     @user=User.find(params[:fid])
     Friend.create(friend_id: params[:fid], user_id: current_user.id, status: "pending")
     respond_to do |format|
-      format.html { redirect_to new_friend_path }
-      format.turbo_stream
+      format.html { redirect_to new_friend_path , notice: "Friend request sent." }
+      format.turbo_stream { flash[:notice] = "Friend request sent." }
     end
   end
 end

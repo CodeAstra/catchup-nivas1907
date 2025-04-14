@@ -10,8 +10,8 @@ class AccountController < ApplicationController
 
     if @user.update(permit)
       respond_to do |format|
-        format.html { redirect_to account_path(params[:id]) }
-        format.turbo_stream
+        format.html { redirect_to account_path(params[:id]), notice: "account details are successfully updated."  }
+        format.turbo_stream { flash[:notice] = "Account details are successfully updated." }
       end
     else
       redirect_to edit_account_path
@@ -22,8 +22,8 @@ class AccountController < ApplicationController
     @user=User.find(current_user.id)
     if @user.update(privacy_status: val)
       respond_to do |format|
-        format.html { redirect_to account_path(params[:id]) }
-        format.turbo_stream
+        format.html { redirect_to account_path(params[:id]) , notice: "privacy option is successfully updated."  }
+        format.turbo_stream { flash[:notice] = "Privacy option is successfully updated." }
       end
     end
   end

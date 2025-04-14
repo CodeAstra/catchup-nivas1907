@@ -2,3 +2,4 @@
     <%= button_to "Like",post_likes_path(@post.id),method: :post %>
       <%= render partial: "like",locals: {post: @post} %>
 <%end%>
+<%= render_turbo_stream_flash_message %>

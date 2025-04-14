@@ -15,12 +15,12 @@ end
   end
   def update
     @user=current_user
-  
+
     @post=Post.find(params[:id])
     if @post.update(post_params)
       respond_to do |format|
-        format.html { redirect_to posts_path }
-        format.turbo_stream
+        format.html { redirect_to posts_path, notice: "post was successfully updated." }
+        format.turbo_stream { flash[:notice] = "Post was successfully updated." }
       end
     end
   end
@@ -34,9 +34,10 @@ end
     @user=current_user
     @post=@user.posts.create(post_params)
     if @post.save
+      flash[:notice] = "Post successfully created"
       respond_to do |format|
-        format.html { redirect_to posts_path }
-        format.turbo_stream
+        format.html { redirect_to posts_path, notice: "post was successfully created." }
+        format.turbo_stream { flash[:notice] = "Post was successfully created." }
       end
     end
   end
@@ -48,8 +49,8 @@ end
     @post=@user.posts.find(params[:id])
       if @post.destroy
         respond_to do |format|
-          format.html { redirect_to posts_path }
-          format.turbo_stream
+          format.html { redirect_to posts_path, notice: "post was successfully deleted." }
+          format.turbo_stream { flash[:notice] = "Post was successfully deleted." }
         end
       end
   end

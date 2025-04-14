@@ -13,3 +13,4 @@
 <% else %>
     <%= turbo_stream.remove "pendingpage_#{@user.id}" %>
 <%end%>
+<%= render_turbo_stream_flash_message %>

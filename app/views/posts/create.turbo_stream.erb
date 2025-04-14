@@ -2,3 +2,4 @@
     <%= render @post %>
 <%end%>
 <%= turbo_stream.update Post.new, "" %>
+<%= render_turbo_stream_flash_message %>
