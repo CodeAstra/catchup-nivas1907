@@ -15,11 +15,11 @@ class User < ApplicationRecord
   def confirmed_friends
     sent = Friendship.where(sender: self).accepted.pluck(:reciver_id)
     received = Friendship.where(reciver: self).accepted.pluck(:sender_id)
-    User.where(id: sent + received)
+    sent + received
   end
 
   def pending_friends
     ids=self.recivied.pending.pluck(:sender_id)
-    User.where(id: ids)
+    ids
   end
 end

@@ -1,6 +1,7 @@
 class FriendrequestsController < ApplicationController
   def index
-    @pendingfriends=current_user.pending_friends
+    @pendingfriends_ids=current_user.pending_friends
+    @pendingfriends=User.where(id: @pendingfriends_ids)
   end
 
   def update
