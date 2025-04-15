@@ -32,12 +32,21 @@ end
   end
   def create
     @user=current_user
-    @post=@user.posts.create(post_params)
-    if @post.save
-      flash[:notice] = "Post successfully created"
+    if params[:post][:title]=="" || params[:post][:description]==""
+      flash[:notice] = "Post field's can't be empty"
       respond_to do |format|
-        format.html { redirect_to posts_path, notice: "post was successfully created." }
-        format.turbo_stream { flash[:notice] = "Post was successfully created." }
+        format.html { redirect_to posts_path, notice: "Post can't be empty" }
+        format.turbo_stream { flash[:notice] = "Post can't be empty" }
+      end
+    else
+      @post=@user.posts.create(post_params)
+      sd
+      if @post.save
+        flash[:notice] = "Post successfully created"
+        respond_to do |format|
+          format.html { redirect_to posts_path, notice: "post was successfully created." }
+          format.turbo_stream { flash[:notice] = "Post was successfully created." }
+        end
       end
     end
   end

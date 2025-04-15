@@ -1,5 +1,8 @@
-<%= turbo_stream.prepend "post" do%>
-    <%= render @post %>
+<% if !@post.nil? %>
+  <%= turbo_stream.prepend "post" do%>
+      <%= render @post %>
+  <%end%>
+  <%= turbo_stream.update Post.new, "" %>
 <%end%>
-<%= turbo_stream.update Post.new, "" %>
+
 <%= render_turbo_stream_flash_message %>
