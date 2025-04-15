@@ -1,7 +1,7 @@
 class FriendsController < ApplicationController
   def index
     @pending_list=current_user.pending_friends
-    @users=current_user.friends
+    @users=current_user.confirmed_friends
     @pending_list_count=@pending_list.count
   end
 
@@ -10,7 +10,7 @@ class FriendsController < ApplicationController
 
   def search
     @input=params[:search]
-      @users=current_user.friends
+      @users=current_user.confirmed_friends
       @users=@users.where("users.username LIKE ?", [ "%#{@input}%" ]).or(@users.where("email LIKE ? ", "%#{@input}%"))
       render "index"
   end
@@ -22,7 +22,7 @@ class FriendsController < ApplicationController
   end
 
   def new
-    @user=User.where.not(id: current_user.id).where.not(id: current_user.friends.ids)
+    @user=User.where.not(id: current_user.id).where.not(id: current_user.confirmed_friends.ids)
   end
 
   def create

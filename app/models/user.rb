@@ -12,7 +12,7 @@ class User < ApplicationRecord
 
   enum :privacy_status, { public_state: 0, private_state: 1, protected_state: 2 }
 
-  def friends
+  def confirmed_friends
     sent = Friendship.where(sender: self).accepted.pluck(:reciver_id)
     received = Friendship.where(reciver: self).accepted.pluck(:sender_id)
     User.where(id: sent + received)

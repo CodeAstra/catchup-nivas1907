@@ -1,4 +1,4 @@
-<% if !@post.nil? %>
+<% if @post.valid? %>
   <%= turbo_stream.prepend "post" do%>
       <%= render @post %>
   <%end%>

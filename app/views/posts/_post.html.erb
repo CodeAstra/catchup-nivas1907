@@ -1,4 +1,5 @@
 <%=turbo_frame_tag "post_#{post.id}" do %>
+ 
     <%= link_to  (
         post.user.username
         ), account_path(post.user_id) , method: :get , data: { turbo_frame: "_top" } %>
@@ -21,4 +22,5 @@
         <%= button_to "delete",post_path(post.id),method: :delete %>
     <%end%>
     <br>
+
 <%end%>

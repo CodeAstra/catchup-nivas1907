@@ -5,7 +5,7 @@ def index
   @posts=Post.all
   @user=User.all
   @like=Like.all
-  @friends_id=Friendship.where(sender_id: current_user.id, status: "accepted").pluck(:reciver_id)+Friendship.where(reciver_id: current_user.id, status: "accepted").pluck(:sender_id)
+  @friends_id=Friendship.where(sender_id: current_user.id).accepted.pluck(:reciver_id)+Friendship.where(reciver_id: current_user.id).accepted.pluck(:sender_id)
   @user_posts=@posts.where(user_id: current_user.id).order(created_at: :desc)
   @other_posts=@posts.where(user_id: @friends_id).order(created_at: :desc)
   @posts=@user_posts+@other_posts
@@ -15,20 +15,18 @@ end
   end
   def update
     @user=current_user
-    if params[:post][:title]=="" || params[:post][:description]==""
-      respond_to do |format|
-        format.html { redirect_to posts_path, notice: "Post field's can't be empty" }
-        format.turbo_stream { flash[:notice] = "Post field's can't be empty" }
-      end
-    else
       @post=Post.find(params[:id])
       if @post.update(post_params)
         respond_to do |format|
           format.html { redirect_to posts_path, notice: "post was successfully updated." }
           format.turbo_stream { flash[:notice] = "Post was successfully updated." }
         end
+      else
+        respond_to do |format|
+          format.html { redirect_to posts_path, notice: "post field can't be empty" }
+          format.turbo_stream { flash[:notice] = "Post field can't be empty." }
+        end
       end
-    end
   end
   def cancel
     respond_to do |format|
@@ -38,21 +36,21 @@ end
   end
   def create
     @user=current_user
-    if params[:post][:title]=="" || params[:post][:description]==""
-      respond_to do |format|
-        format.html { redirect_to posts_path, notice: "Post field's can't be empty" }
-        format.turbo_stream { flash[:notice] = "Post field's can't be empty" }
-      end
-    else
       @post=@user.posts.create(post_params)
+
       if @post.save
         flash[:notice] = "Post successfully created"
         respond_to do |format|
-          format.html { redirect_to posts_path, notice: "post was successfully created." }
-          format.turbo_stream { flash[:notice] = "Post was successfully created." }
+          format.html { redirect_to posts_path, notice: :notice }
+          format.turbo_stream { flash[:notice] = notice }
         end
+      else
+        respond_to do |format|
+          format.html { redirect_to posts_path, notice: "post field can't be empty" }
+          format.turbo_stream { flash[:notice] = "Post field can't be empty." }
+        end
+
       end
-    end
   end
   def edit
     @post=Post.find(params[:id])

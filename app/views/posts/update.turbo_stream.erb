@@ -1,4 +1,4 @@
-<% if !@post.nil? %>
+<% if @post.valid? %>
   <%= turbo_stream.replace "post_#{@post.id}" do %>
       <%= render @post %>
   <%end%>
