@@ -1,8 +1,8 @@
 class FriendsController < ApplicationController
   def index
-    @friends_ids=Friendship.where(sender_id: current_user.id, status: "accepted").pluck(:reciver_id)+Friendship.where(reciver_id: current_user.id, status: "accepted").pluck(:sender_id)
+   # @friends_ids=Friendship.where(sender_id: current_user.id, status: "accepted").pluck(:reciver_id)+Friendship.where(reciver_id: current_user.id, status: "accepted").pluck(:sender_id)
     @pending_list=Friendship.where(reciver_id: current_user, status: "pending")
-    @users=User.where(id: @friends_ids)
+    @users=current_user.friends
     @pending_list_count=@pending_list.count
   end
 
@@ -11,8 +11,8 @@ class FriendsController < ApplicationController
 
   def search
     @input=params[:search]
-      @friends_ids=Friendship.where(sender_id: current_user.id, status: "accepted").pluck(:reciver_id)+Friendship.where(reciver_id: current_user.id, status: "accepted").pluck(:sender_id)
-      @users=User.where(id: @friends_ids)
+      #@friends_ids=Friendship.where(sender_id: current_user.id, status: "accepted").pluck(:reciver_id)+Friendship.where(reciver_id: current_user.id, status: "accepted").pluck(:sender_id)
+      @users=current_user.friends
       @users=@users.where("users.username LIKE ?", [ "%#{@input}%" ]).or(@users.where("email LIKE ? ", "%#{@input}%"))
       render "index"
   end
@@ -24,7 +24,7 @@ class FriendsController < ApplicationController
   end
 
   def new
-    @user=User.where.not(id: current_user.id).where.not(id: current_user.friendships.where(status: "accepted").pluck(:reciver_id))
+    @user=User.where.not(id: current_user.id).where.not(id: current_user.friends.ids)
   end
 
   def create

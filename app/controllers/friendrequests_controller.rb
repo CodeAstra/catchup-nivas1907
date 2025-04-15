@@ -5,7 +5,7 @@ class FriendrequestsController < ApplicationController
   end
 
   def update
-    if Friendship.find(params[:id]).update(status: "accepted")
+    if Friendship.find(params[:id]).updatestate("accepted")
       respond_to do |format|
         format.html { redirect_to friends_path, notice: "Friend request accepted." }
         format.turbo_stream {  flash[:notice] = "Friend request accepted." }

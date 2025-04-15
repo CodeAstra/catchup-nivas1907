@@ -1,5 +1,5 @@
 <% @pending_list.each do |p| %>
-    <%u=p.user%>
+    <%u=p.sender%>
     <%= turbo_frame_tag "pendingpage_#{u.id}" do %>
         <% if u.avatar.attached? %>
             <img src="<%=url_for(u.avatar)%>" class="avatar" />
