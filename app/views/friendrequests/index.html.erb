@@ -1,5 +1,4 @@
-<% @pending_list.each do |p| %>
-    <%u=p.sender%>
+<% @pendingfriends.each do |u| %>
     <%= turbo_frame_tag "pendingpage_#{u.id}" do %>
         <% if u.avatar.attached? %>
             <img src="<%=url_for(u.avatar)%>" class="avatar" />
@@ -9,6 +8,7 @@
         u.username||u.email
         ), account_path(u.id) , method: :get , data: { turbo_frame: "_top" } %>
         <h1></h1>
+        <% p=Friendship.where(reciver_id: current_user.id , sender_id: u.id).first %>
         <%= button_to "accept",friendrequest_path(p.id,sender_id: u.id),method: :patch %>
         <%= button_to "reject",friendrequest_path(p.id,sender_id: u.id),method: :delete %>
         <p>sent <%= time_ago_in_words(p.updated_at) %> ago </p>

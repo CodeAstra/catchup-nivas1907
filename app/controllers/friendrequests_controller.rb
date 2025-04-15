@@ -1,7 +1,6 @@
 class FriendrequestsController < ApplicationController
   def index
-    @pending_list=Friendship.where(reciver_id: current_user, status: "pending")
-    @pending_list_count=@pending_list.count
+    @pendingfriends=current_user.pendingFriends
   end
 
   def update
