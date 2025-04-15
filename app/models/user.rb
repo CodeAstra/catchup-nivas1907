@@ -15,7 +15,7 @@ class User < ApplicationRecord
     User.where(id: sent+received)
   end
   def pendingFriends
-    ids=self.recivied.pluck(:sender_id)
+    ids=self.recivied.where(status: "pending").pluck(:sender_id)
     User.where(id: ids)
   end
 end
