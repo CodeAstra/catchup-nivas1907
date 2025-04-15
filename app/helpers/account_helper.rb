@@ -1,13 +1,13 @@
 module AccountHelper
   def pendingrequest(id)
-    val=Friendship.exists?(sender_id: id, reciver_id: current_user.id, status: "pending")
+    val=Friendship.pending.exists?(sender_id: id, reciver_id: current_user.id)
     val
   end
   def getid(id)
-    Friendship.where(sender_id: id, reciver_id: current_user.id, status: "pending").first
+    Friendship.where(sender_id: id, reciver_id: current_user.id).pending.first
   end
   def sentrequest(id)
-    val=Friendship.exists?(sender_id: current_user.id, reciver_id: id, status: "pending")
+    val=Friendship.pending.exists?(sender_id: current_user.id, reciver_id: id)
     val
   end
   def isfriend(id)
@@ -23,7 +23,7 @@ module AccountHelper
     # private
     checker3= (User.find(id).private_state? && current_user.friends.ids.include?(id))
     # protected
-    checker4=(User.find(id).protected_state? && (Friendship.exists?(sender_id: ids, reciver_id: id, status: "accepted")||Friendship.exists?(sender_id: id, reciver_id: ids, status: "accepted")) ||Friendship.exists?(sender_id: current_user.id, reciver_id: id, status: "accepted")||Friendship.exists?(sender_id: id, reciver_id: current_user.id, status: "accepted"))
+    checker4=(User.find(id).protected_state? && (Friendship.accepted.exists?(sender_id: ids, reciver_id: id)||Friendship.accepted.exists?(sender_id: id, reciver_id: ids)) ||Friendship.accepted.exists?(sender_id: current_user.id, reciver_id: id)||Friendship.accepted.exists?(sender_id: id, reciver_id: current_user.id))
     val=checker1||checker2||checker3||checker4
     val
   end

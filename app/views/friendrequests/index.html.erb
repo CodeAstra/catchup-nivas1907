@@ -9,8 +9,8 @@
         ), account_path(u.id) , method: :get , data: { turbo_frame: "_top" } %>
         <h1></h1>
         <% p=Friendship.where(reciver_id: current_user.id , sender_id: u.id).first %>
-        <%= button_to "accept",friendrequest_path(p.id,sender_id: u.id),method: :patch %>
-        <%= button_to "reject",friendrequest_path(p.id,sender_id: u.id),method: :delete %>
+        <%= button_to "accept",friendrequest_path(p.id,sender_id: u.id,status: 1),method: :patch %>
+        <%= button_to "reject",friendrequest_path(p.id,sender_id: u.id,status: 0),method: :patch %>
         <p>sent <%= time_ago_in_words(p.updated_at) %> ago </p>
         <h1></h1>
     <%end%>

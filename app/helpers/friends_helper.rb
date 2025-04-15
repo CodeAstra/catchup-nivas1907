@@ -1,7 +1,7 @@
 module FriendsHelper
   def check(id)
    @friend=Friendship.all
-   if @friend.exists?(sender_id: current_user.id, reciver_id: id, status: "pending")
+   if @friend.pending.exists?(sender_id: current_user.id, reciver_id: id)
      true
    else
       false
@@ -9,7 +9,7 @@ module FriendsHelper
   end
   def checkf(id)
     @friend=Friendship.all
-    val=Friendship.exists?(status: :"accepted", sender_id: current_user.id, reciver_id: id)||Friendship.exists?(status: :"accepted", sender_id: id, reciver_id: current_user.id)
+    val=Friendship.accepted.exists?(sender_id: current_user.id, reciver_id: id)||Friendship.accepted.exists?(sender_id: id, reciver_id: current_user.id)
     if val
       false
     else
@@ -17,10 +17,10 @@ module FriendsHelper
     end
   end
   def pendingrequest(id)
-    val=Friendship.exists?(sender_id: id, reciver_id: current_user.id, status: "pending")
+    val=Friendship.pending.exists?(sender_id: id, reciver_id: current_user.id)
     val
   end
   def getid(id)
-    Friendship.where(sender_id: id, reciver_id: current_user.id, status: "pending").first
+    Friendship.where(sender_id: id, reciver_id: current_user.id).pending.first
   end
 end
