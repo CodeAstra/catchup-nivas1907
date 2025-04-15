@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "account_#{current_user.id}" do  %>
-<h1>name:<%=@user.username || "NA"%> </h1>
+<h1>name:<%=@user.username || @user.email[0..-11]  %> </h1>
 <h1>mail:<%=@user.email%> </h1>
 <p>Bio:<%=@user.bio%></p>
 <% if @user.avatar.attached? %>
