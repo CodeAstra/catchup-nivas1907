@@ -15,12 +15,18 @@ end
   end
   def update
     @user=current_user
-
-    @post=Post.find(params[:id])
-    if @post.update(post_params)
+    if params[:post][:title]=="" || params[:post][:description]==""
       respond_to do |format|
-        format.html { redirect_to posts_path, notice: "post was successfully updated." }
-        format.turbo_stream { flash[:notice] = "Post was successfully updated." }
+        format.html { redirect_to posts_path, notice: "Post field's can't be empty" }
+        format.turbo_stream { flash[:notice] = "Post field's can't be empty" }
+      end
+    else
+      @post=Post.find(params[:id])
+      if @post.update(post_params)
+        respond_to do |format|
+          format.html { redirect_to posts_path, notice: "post was successfully updated." }
+          format.turbo_stream { flash[:notice] = "Post was successfully updated." }
+        end
       end
     end
   end
@@ -33,14 +39,12 @@ end
   def create
     @user=current_user
     if params[:post][:title]=="" || params[:post][:description]==""
-      flash[:notice] = "Post field's can't be empty"
       respond_to do |format|
-        format.html { redirect_to posts_path, notice: "Post can't be empty" }
-        format.turbo_stream { flash[:notice] = "Post can't be empty" }
+        format.html { redirect_to posts_path, notice: "Post field's can't be empty" }
+        format.turbo_stream { flash[:notice] = "Post field's can't be empty" }
       end
     else
       @post=@user.posts.create(post_params)
-      sd
       if @post.save
         flash[:notice] = "Post successfully created"
         respond_to do |format|
