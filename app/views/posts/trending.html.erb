@@ -13,8 +13,8 @@
     <%= time_ago_in_words(p.created_at) %>
     <p>description:<%= p.description %></p>
     <%=turbo_frame_tag "like_#{p.id}" do %>
-        <% if p.like.exists?(user_id:current_user) %>
-            <%= button_to "Unlike",post_like_path(post_id: p.id,id: p.like.find_by(user_id: current_user.id).id),method: :delete %>
+        <% if p.likes.exists?(user_id:current_user) %>
+            <%= button_to "Unlike",post_like_path(post_id: p.id,id: p.likes.find_by(user_id: current_user.id).id),method: :delete %>
         <%else%>
              <%= button_to "Like",post_likes_path(p.id),method: :post %>
         <%end%>

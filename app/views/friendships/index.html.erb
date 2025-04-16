@@ -1,6 +1,6 @@
-<%= button_to "Add Friends",new_friend_path,method: :get %>
-<%= button_to "Pending Requests(#{@pending_list_count})",friendrequests_path,method: :get %>
-<%= form_with url: search_path, method: :get do |f| %>
+<%= button_to "Add Friends",new_friendship_path,method: :get %>
+<%= button_to "Pending Requests(#{@pending_list_count})",pending_requests_friendships_path,method: :get %>
+<%= form_with url: search_friendships_path, method: :get do |f| %>
    <%= f.text_field :search, value: params[:search]  %>
    <%= f.submit "Search" %>
 <% end %>

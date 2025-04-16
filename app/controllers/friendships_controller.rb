@@ -1,4 +1,4 @@
-class FriendsController < ApplicationController
+class FriendshipsController < ApplicationController
   def index
     @pending_list_ids=current_user.pending_friends
     @confirmed_ids=current_user.accepted_friends
@@ -6,24 +6,6 @@ class FriendsController < ApplicationController
     @pending_list=User.where(id: @pending_list_ids)
     @pending_list_count=@pending_list.count
   end
-
-  def show
-  end
-
-  def search
-    @input=params[:search]
-    @confirmed_ids=current_user.accepted_friends
-    @users=User.where(id: @confirmed_ids)
-      @users=@users.where("users.username LIKE ?", [ "%#{@input}%" ]).or(@users.where("email LIKE ? ", "%#{@input}%"))
-      render "index"
-  end
-  def search2
-    @input=params[:search]
-    @user=User.where.not(id: current_user.id).where.not(id: current_user.friendships.where(status: "accepted").pluck(:reciver_id))
-      @user=@user.where("username LIKE ? ", "%#{@input}%").or(@user.where("email LIKE ? ", "%#{@input}%"))
-      render "new"
-  end
-
   def new
     @user=User.where.not(id: current_user.id).where.not(id: current_user.accepted_friends)
   end
@@ -44,5 +26,34 @@ class FriendsController < ApplicationController
         format.turbo_stream { flash[:notice] = "Friend request sent." }
       end
     end
+  end
+
+  def update
+    if Friendship.find(params[:id]).update_status(params[:status].to_i)
+      respond_to do |format|
+        format.html { redirect_to friends_path }
+        format.turbo_stream {  flash[:notice] = "Friend request #{params[:status].to_i==1? " accepted" : "rejected " }" }
+      end
+    end
+  end
+
+  def pending_requests
+    @pendingfriends_ids=current_user.pending_friends
+    @pendingfriends=User.where(id: @pendingfriends_ids)
+  end
+
+  def search
+    @input=params[:search]
+    @confirmed_ids=current_user.accepted_friends
+    @users=User.where(id: @confirmed_ids)
+      @users=@users.where("users.username LIKE ?", [ "%#{@input}%" ]).or(@users.where("email LIKE ? ", "%#{@input}%"))
+      render "index"
+  end
+
+  def search2
+    @input=params[:search]
+    @user=User.where.not(id: current_user.id).where.not(id: current_user.friendships.where(status: "accepted").pluck(:reciver_id))
+      @user=@user.where("username LIKE ? ", "%#{@input}%").or(@user.where("email LIKE ? ", "%#{@input}%"))
+      render "new"
   end
 end

@@ -6,8 +6,8 @@
             <li><%= button_to "Log out" , destroy_user_session_path ,method: :delete%></li>
             <li><%= link_to "Account" , account_path(current_user.id) %></li>
             <li><%= link_to "post" , posts_path %></li>
-            <li><%= link_to "friends" , friends_path %></li>
-            <li> <%= link_to "Trending Posts", trending_index_path %> </li>
+            <li><%= link_to "friends" , friendships_path %></li>
+            <li> <%= link_to "Trending Posts",  trendingposts_posts_path %> </li>
         <%else%>
             <li><%= link_to "Sign Up" , new_user_registration_path %></li>
             <li><%= link_to "Login" , new_user_session_path %></li>

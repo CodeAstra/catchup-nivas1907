@@ -64,6 +64,21 @@ end
         end
       end
   end
+  def trending
+    @posts=Post.all
+    @allp=Post.all
+    @user=User.all
+    @like=Like.all
+    @friends_id=current_user.accepted_friends
+    @user_posts=@posts.where(user_id: current_user.id).order(created_at: :desc)
+    @other_posts=@posts.where(user_id: @friends_id).order(created_at: :desc)
+    @posts=@user_posts+@other_posts
+    @h = {}
+    @posts.each do |p|
+      @h[p.id]=((p.likes.count)*3600*1000/(Time.now-p.created_at)).round/10.0
+    end
+    @h=@h.sort_by { |k, v| -v }
+  end
   def post_params
     params.require(:post).permit(:title, :description)
   end

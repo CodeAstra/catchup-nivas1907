@@ -1,4 +1,4 @@
-module FriendsHelper
+module FriendshipsHelper
   def check(id)
    @friend=Friendship.all
    if @friend.pending.exists?(sender_id: current_user.id, reciver_id: id)

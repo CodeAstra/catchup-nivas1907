@@ -8,7 +8,7 @@
 <% if current_user.id ==  @user.id %>
     <%= button_to "edit" ,edit_account_path(current_user.id),method: :get %>
     <%= turbo_frame_tag "account_privacy" do %>
-        <%=form_with model: @user ,url:privacyupdate_path,method: :patch do |f| %>
+        <%=form_with model: @user ,url:privacyupdate_account_index_path,method: :patch do |f| %>
             <%= f.select :privacy_status,options_for_select(User.privacy_statuses,   @user.privacy_status.to_i)  %>
             <%= f.submit %>
         <%end%>
@@ -18,14 +18,14 @@
         <% if pendingrequest(@user.id) %>
             <% idi=getid(@user.id)  %>
             <%= turbo_frame_tag "accountpage_#{@user.id}" do%>
-                <%= button_to "accept",friendrequest_path(idi,sender_id: @user.id),method: :patch %>
-                <%= button_to "reject",friendrequest_path(idi,sender_id: @user.id),method: :delete %>
+                <%= button_to "accept",friendship_path(idi,sender_id: @user.id,status: Friendship.friendship_statuses[:accepted]),method: :patch %>
+                <%= button_to "reject",friendship_path(idi,sender_id: @user.id,status: Friendship.friendship_statuses[:rejected]),method: :patch %>
             <%end%>
         <% elsif sentrequest(@user.id) %>
             <%= button_to "pending" %>
         <% elsif !isfriend(@user.id) %>
             <%= turbo_frame_tag "fbutton_#{@user.id}" do%>
-                <%= button_to "Add Friend",friends_path(fid:@user.id),method: :post %>
+                <%= button_to "Add Friend",friendships_path(fid:@user.id),method: :post %>
             <%end%>
         <%end%>
     <%end%>

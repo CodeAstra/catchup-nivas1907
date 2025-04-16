@@ -1,4 +1,4 @@
-<% if request.referer == "http://localhost:3000/friends/new" %>
+<% if request.referer == "http://localhost:3000/friendships/new" %>
     <%= turbo_stream.remove "friends_#{params[:sender_id]}"%>
 <%elsif request.referer ==  "http://localhost:3000/account/#{params[:sender_id]}" %>
     <%= turbo_stream.remove "accountpage_#{params[:sender_id]}"  %>

@@ -1,10 +1,10 @@
 <%= turbo_frame_tag @post do %>
-   <%= form_with model: @post,url: create_path, method: :post do |f| %>
+   <%= form_with model: @post,url: posts_path, method: :post do |f| %>
       <%= f.label :title, placeholder: "title", :class => "form_control"%>
       <%= f.text_field :title %>
       <%= f.label "description", placeholder: "description", :class => "form_box"%>
       <%= f.text_field :description %>
       <%= f.submit %>
    <% end %>
-   <%= button_to "cancel", cancelpost_path,method: :get %>
+   <%= button_to "cancel", cancelpost_posts_path,method: :get %>
 <% end %>
