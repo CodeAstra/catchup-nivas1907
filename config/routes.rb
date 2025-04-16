@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  root to: "home#index"
-
   devise_for :users, controllers: { sessions: "users/sessions", registrations: "users/registrations" }
 
 
@@ -28,4 +26,6 @@ Rails.application.routes.draw do
   end
 
   get "up" => "rails/health#show", as: :rails_health_check
+
+  root to: "home#index"
 end

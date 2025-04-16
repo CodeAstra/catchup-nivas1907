@@ -3,13 +3,14 @@ before_action :authenticate_user!
 
   def show
     @user=User.find(params[:id])
-    @posts=Post.where(user_id: @user).order(created_at: :desc)
+    @posts=@user.posts.order(created_at: :desc)
     @like=Like.all
-    @friends_count=Friendship.where(sender_id: @user.id).accepted.count+Friendship.where(reciver_id: @user.id).accepted.count
+    @friends_count=@user.accepted_friends_ids.size
   end
 
   def edit
-    @user=User.find(params[:id])
+    @user=current_user
+    #@user=User.find(params[:id])
   end
 
   def update

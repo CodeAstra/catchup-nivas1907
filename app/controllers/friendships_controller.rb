@@ -1,15 +1,12 @@
 class FriendshipsController < ApplicationController
   before_action :authenticate_user!
   def index
-    @pending_list_ids=current_user.pending_friends
-    @confirmed_ids=current_user.accepted_friends
-    @users=User.where(id: @confirmed_ids)
-    @pending_list=User.where(id: @pending_list_ids)
-    @pending_list_count=@pending_list.count
+    @users=User.where(id: current_user.accepted_friends_ids)
+    @pending_list_count=current_user.pending_friends_ids.size
   end
 
   def new
-    @user=User.where.not(id: current_user.id).where.not(id: current_user.accepted_friends)
+    @user=User.where.not(id: current_user.id).where.not(id: current_user.accepted_friends_ids)
   end
 
   def create
@@ -40,13 +37,13 @@ class FriendshipsController < ApplicationController
   end
 
   def pending_requests
-    @pendingfriends_ids=current_user.pending_friends
+    @pendingfriends_ids=current_user.pending_friends_ids
     @pendingfriends=User.where(id: @pendingfriends_ids)
   end
 
   def search
     @input=params[:search]
-    @confirmed_ids=current_user.accepted_friends
+    @confirmed_ids=current_user.accepted_friends_ids
     @users=User.where(id: @confirmed_ids)
       @users=@users.where("users.username LIKE ?", [ "%#{@input}%" ]).or(@users.where("email LIKE ? ", "%#{@input}%"))
       render "index"

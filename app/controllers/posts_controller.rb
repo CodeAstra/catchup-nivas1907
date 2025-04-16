@@ -2,10 +2,7 @@ class PostsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @user=User.all
-    @user_posts=current_user.posts
-    @other_posts=Post.where(user_id: current_user.accepted_friends).order(created_at: :desc)
-    @posts=@user_posts+@other_posts
+    @posts=current_user.my_feed
   end
 
   def new
@@ -13,40 +10,25 @@ class PostsController < ApplicationController
   end
 
   def create
-    @user=current_user
-      @post=@user.posts.create(post_params)
-      if @post.save
-        respond_to do |format|
-          format.html { redirect_to posts_path }
-          format.turbo_stream { flash[:notice] = "Post successfully created" }
-        end
-      else
-        respond_to do |format|
-          format.html { redirect_to posts_path }
-          format.turbo_stream { flash[:notice] = "Post field can't be empty." }
-        end
-
-      end
+    @post=current_user.posts.create(post_params)
+    respond_to do |format|
+      format.html { redirect_to posts_path }
+      format.turbo_stream { flash[:notice] =   @post.valid? ? "Post successfully created": @post.errors.full_messages.to_sentence  }
+    end
   end
 
   def edit
-    @post=Post.find(params[:id])
+    @post=current_user.posts.find(params[:id])
   end
 
   def update
-    @user=current_user
-      @post=Post.find(params[:id])
-      if @post.update(post_params)
-        respond_to do |format|
-          format.html { redirect_to posts_path }
-          format.turbo_stream { flash[:notice] = "Post was successfully updated." }
-        end
-      else
-        respond_to do |format|
-          format.html { redirect_to posts_path }
-          format.turbo_stream { flash[:notice] = "Post field can't be empty." }
-        end
-      end
+    # @user=current_user
+    @post=Post.find(params[:id])
+    @post.update(post_params)
+    respond_to do |format|
+      format.html { redirect_to posts_path }
+      format.turbo_stream { flash[:notice] = @post.valid? ? "Post successfully updated": @post.errors.full_messages.to_sentence }
+    end
   end
 
   def cancel
@@ -57,29 +39,24 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    @user=current_user
-    @post=@user.posts.find(params[:id])
-      if @post.destroy
-        respond_to do |format|
-          format.html { redirect_to posts_path }
-          format.turbo_stream { flash[:notice] = "Post was successfully deleted." }
-        end
-      end
+    @post=current_user.posts.find(params[:id])
+    @post.destroy
+    respond_to do |format|
+      format.html { redirect_to posts_path }
+      format.turbo_stream { flash[:notice] = "Post was successfully deleted." }
+    end
   end
 
   def trending
-    @posts=Post.all
-    @allp=Post.all
-    @friends_id=current_user.accepted_friends
-    @user_posts=current_user.posts
-    @other_posts=@posts.where(user_id: @friends_id).order(created_at: :desc)
-    @posts=@user_posts+@other_posts
+    @posts=current_user.my_feed
     @h = {}
     @posts.each do |p|
       @h[p.id]=((p.likes_count)*3600*1000/(Time.now-p.created_at)).round/10.0
     end
     @h=@h.sort_by { |k, v| -v }
   end
+
+private
 
   def post_params
     params.require(:post).permit(:title, :description)

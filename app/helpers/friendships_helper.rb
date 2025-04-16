@@ -1,26 +1,17 @@
 module FriendshipsHelper
   def check(id)
-   @friend=Friendship.all
-   if @friend.pending.exists?(sender_id: current_user.id, reciver_id: id)
-     true
-   else
-      false
-   end
+   current_user.sent.pending.exists?(reciver_id: id)
   end
+
   def checkf(id)
-    @friend=Friendship.all
-    val=Friendship.accepted.exists?(sender_id: current_user.id, reciver_id: id)||Friendship.accepted.exists?(sender_id: id, reciver_id: current_user.id)
-    if val
-      false
-    else
-      true
-    end
+    !current_user.accepted_friends_ids.include?(id)
   end
+
   def pendingrequest(id)
-    val=Friendship.pending.exists?(sender_id: id, reciver_id: current_user.id)
-    val
+    current_user.received.pending.exists?(sender_id: id)
   end
+
   def getid(id)
-    Friendship.where(sender_id: id, reciver_id: current_user.id).pending.first
+    current_user.received.pending.where(sender_id: id).first
   end
 end
