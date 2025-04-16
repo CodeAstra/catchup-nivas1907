@@ -1,5 +1,5 @@
 <%= turbo_stream.replace "account_privacy"  do%>
-    <%=form_with model: @user ,url:privacyupdate_path,method: :patch do |f| %>
+    <%=form_with model: @user ,url:privacy_account_index_path,method: :patch do |f| %>
       <%= f.select :privacy_status,options_for_select(User.privacy_statuses,   :selected => @user.privacy_status)  %>
       <%= f.submit %>
     <%end%>

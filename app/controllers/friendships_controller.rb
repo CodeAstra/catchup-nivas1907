@@ -1,4 +1,5 @@
 class FriendshipsController < ApplicationController
+  before_action :authenticate_user!
   def index
     @pending_list_ids=current_user.pending_friends
     @confirmed_ids=current_user.accepted_friends
@@ -6,6 +7,7 @@ class FriendshipsController < ApplicationController
     @pending_list=User.where(id: @pending_list_ids)
     @pending_list_count=@pending_list.count
   end
+
   def new
     @user=User.where.not(id: current_user.id).where.not(id: current_user.accepted_friends)
   end

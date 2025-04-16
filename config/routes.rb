@@ -6,24 +6,24 @@ Rails.application.routes.draw do
 
   resources :account, only: [ :show, :edit, :update ] do
     collection do
-      get "/cancel",            to: "account#cancel"
-      patch "/privacyupdate",   to: "account#privacy"
+      get :cancel
+      patch :privacy
     end
   end
 
   resources :posts, except: :show do
     collection do
-      get "trendingposts",      to: "posts#trending"
-      get "/cancelpost",        to: "posts#cancel"
+      get :trending
+      get :cancel
     end
     resources :likes, only: [ :destroy, :create ]
   end
 
   resources :friendships, only: [ :index, :new, :create, :update ] do
     collection do
-      get "/pending_requests",   to: "friendships#pending_requests"
-      get "/search",            to: "friendships#search"
-      get "/searchfriend",      to: "friendships#search2"
+      get :pending_requests
+      get :search
+      get :search2
     end
   end
 

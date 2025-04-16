@@ -1,10 +1,10 @@
 class LikesController < ApplicationController
-  def destroy
+  before_action :authenticate_user!
+  def create
     @post=Post.find(params[:post_id])
-    @like=@post.likes.find_by(id: params[:id])
-    if @like.destroy
-      puts "like removed"
-      flash[:notice] = "Unliked the post"
+    @like= @post.likes.create(user_id: current_user.id)
+    if @like.save
+      flash[:notice] = "Liked the post"
       respond_to do |format|
         format.html { redirect_to posts_path }
         format.turbo_stream
@@ -12,12 +12,11 @@ class LikesController < ApplicationController
     end
   end
 
-  def create
+  def destroy
     @post=Post.find(params[:post_id])
-    @like= @post.likes.create(user_id: current_user.id)
-    if @like.save
-      puts "like created"
-      flash[:notice] = "Liked the post"
+    @like=@post.likes.find_by(id: params[:id])
+    if @like.destroy
+      flash[:notice] = "Unliked the post"
       respond_to do |format|
         format.html { redirect_to posts_path }
         format.turbo_stream

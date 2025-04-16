@@ -1,10 +1,17 @@
 class AccountController < ApplicationController
+before_action :authenticate_user!
+
   def show
     @user=User.find(params[:id])
     @posts=Post.where(user_id: @user).order(created_at: :desc)
     @like=Like.all
     @friends_count=Friendship.where(sender_id: @user.id).accepted.count+Friendship.where(reciver_id: @user.id).accepted.count
   end
+
+  def edit
+    @user=User.find(params[:id])
+  end
+
   def update
     @user=User.find(params[:id])
 
@@ -17,6 +24,7 @@ class AccountController < ApplicationController
       redirect_to edit_account_path
     end
   end
+
   def privacy
     val=(params[:user][:privacy_status].to_i)
     @user=User.find(current_user.id)
@@ -27,6 +35,7 @@ class AccountController < ApplicationController
       end
     end
   end
+
   def cancel
     @user=User.find(current_user.id)
     respond_to do |format|
@@ -34,9 +43,9 @@ class AccountController < ApplicationController
       format.turbo_stream
     end
   end
-  def edit
-    @user=User.find(params[:id])
-  end
+
+private
+
   def permit
     params.require(:user).permit(:username, :bio, :avatar, :status, :privacy_status)
   end
