@@ -1,7 +1,7 @@
 class FriendsController < ApplicationController
   def index
     @pending_list_ids=current_user.pending_friends
-    @confirmed_ids=current_user.confirmed_friends
+    @confirmed_ids=current_user.accepted_friends
     @users=User.where(id: @confirmed_ids)
     @pending_list=User.where(id: @pending_list_ids)
     @pending_list_count=@pending_list.count
@@ -12,7 +12,7 @@ class FriendsController < ApplicationController
 
   def search
     @input=params[:search]
-    @confirmed_ids=current_user.confirmed_friends
+    @confirmed_ids=current_user.accepted_friends
     @users=User.where(id: @confirmed_ids)
       @users=@users.where("users.username LIKE ?", [ "%#{@input}%" ]).or(@users.where("email LIKE ? ", "%#{@input}%"))
       render "index"
@@ -25,22 +25,22 @@ class FriendsController < ApplicationController
   end
 
   def new
-    @user=User.where.not(id: current_user.id).where.not(id: current_user.confirmed_friends)
+    @user=User.where.not(id: current_user.id).where.not(id: current_user.accepted_friends)
   end
 
   def create
     @user=User.find(params[:fid])
     if  Friendship.rejected.exists?(reciver_id: params[:fid], sender_id: current_user.id)
       id=Friendship.rejected.where(reciver_id: params[:fid], sender_id: current_user.id).first.id
-      Friendship.find(id).updatestate(2)
+      Friendship.find(id).update_status(Friendship.friendship_statuses[:pending])
       respond_to do |format|
-        format.html { redirect_to new_friend_path, notice: "Friend request sent." }
+        format.html { redirect_to new_friend_path }
         format.turbo_stream { flash[:notice] = "Friend request sent." }
       end
     else
-      Friendship.create(reciver_id: params[:fid], sender_id: current_user.id, friendship_status: 2)
+      Friendship.create(reciver_id: params[:fid], sender_id: current_user.id, friendship_status: Friendship.friendship_statuses[:pending])
       respond_to do |format|
-        format.html { redirect_to new_friend_path, notice: "Friend request sent." }
+        format.html { redirect_to new_friend_path }
         format.turbo_stream { flash[:notice] = "Friend request sent." }
       end
     end

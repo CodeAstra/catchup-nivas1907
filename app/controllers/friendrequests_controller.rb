@@ -5,19 +5,10 @@ class FriendrequestsController < ApplicationController
   end
 
   def update
-    if Friendship.find(params[:id]).updatestate(params[:status].to_i)
+    if Friendship.find(params[:id]).update_status(params[:status].to_i)
       respond_to do |format|
-        format.html { redirect_to friends_path, notice: "Friend request accepted." }
-        format.turbo_stream {  flash[:notice] = "Friend request accepted." }
-      end
-    end
-  end
-  def destroy
-    @user=User.find(params[:sender_id])
-    if Friendship.find(params[:id]).updatestate(0)
-      respond_to do |format|
-        format.html { redirect_to friends_path, notice: "Friend request rejected." }
-        format.turbo_stream { flash[:notice] = "Friend request rejected." }
+        format.html { redirect_to friends_path }
+        format.turbo_stream {  flash[:notice] = "Friend request #{params[:status].to_i==1? " accepted" : "rejected " }" }
       end
     end
   end

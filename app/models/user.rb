@@ -3,7 +3,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-         
+
   has_one_attached :avatar
 
   has_many :posts
@@ -12,14 +12,13 @@ class User < ApplicationRecord
 
   enum :privacy_status, { public_state: 0, private_state: 1, protected_state: 2 }
 
-  def confirmed_friends
+  def accepted_friends
     sent = Friendship.where(sender: self).accepted.pluck(:reciver_id)
     received = Friendship.where(reciver: self).accepted.pluck(:sender_id)
     sent + received
   end
 
   def pending_friends
-    ids=self.recivied.pending.pluck(:sender_id)
-    ids
+    self.recivied.pending.pluck(:sender_id)
   end
 end

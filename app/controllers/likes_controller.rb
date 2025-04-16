@@ -5,7 +5,6 @@ class LikesController < ApplicationController
     if @like.destroy
       puts "like removed"
       flash[:notice] = "Unliked the post"
-     
       respond_to do |format|
         format.html { redirect_to posts_path }
         format.turbo_stream

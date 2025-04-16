@@ -2,12 +2,11 @@ class PostsController < ApplicationController
   def show
   end
 def index
-  @posts=Post.all
   @user=User.all
   @like=Like.all
   @friends_id=Friendship.where(sender_id: current_user.id).accepted.pluck(:reciver_id)+Friendship.where(reciver_id: current_user.id).accepted.pluck(:sender_id)
-  @user_posts=@posts.where(user_id: current_user.id).order(created_at: :desc)
-  @other_posts=@posts.where(user_id: @friends_id).order(created_at: :desc)
+  @user_posts=Post.where(user_id: current_user.id).order(created_at: :desc)
+  @other_posts=Post.where(user_id: @friends_id).order(created_at: :desc)
   @posts=@user_posts+@other_posts
 end
   def new
@@ -18,12 +17,12 @@ end
       @post=Post.find(params[:id])
       if @post.update(post_params)
         respond_to do |format|
-          format.html { redirect_to posts_path, notice: "post was successfully updated." }
+          format.html { redirect_to posts_path }
           format.turbo_stream { flash[:notice] = "Post was successfully updated." }
         end
       else
         respond_to do |format|
-          format.html { redirect_to posts_path, notice: "post field can't be empty" }
+          format.html { redirect_to posts_path }
           format.turbo_stream { flash[:notice] = "Post field can't be empty." }
         end
       end
@@ -41,12 +40,12 @@ end
       if @post.save
         flash[:notice] = "Post successfully created"
         respond_to do |format|
-          format.html { redirect_to posts_path, notice: :notice }
+          format.html { redirect_to posts_path }
           format.turbo_stream { flash[:notice] = notice }
         end
       else
         respond_to do |format|
-          format.html { redirect_to posts_path, notice: "post field can't be empty" }
+          format.html { redirect_to posts_path }
           format.turbo_stream { flash[:notice] = "Post field can't be empty." }
         end
 
@@ -60,7 +59,7 @@ end
     @post=@user.posts.find(params[:id])
       if @post.destroy
         respond_to do |format|
-          format.html { redirect_to posts_path, notice: "post was successfully deleted." }
+          format.html { redirect_to posts_path }
           format.turbo_stream { flash[:notice] = "Post was successfully deleted." }
         end
       end
