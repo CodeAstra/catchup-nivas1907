@@ -21,7 +21,12 @@ class User < ApplicationRecord
   def pending_friends_ids
     self.received.pending.pluck(:sender_id)
   end
+
   def my_feed
       Post.where(user_id: self.id).order(created_at: :desc) + Post.where(user_id: self.accepted_friends_ids).order(created_at: :desc)
+  end
+
+  def privacy_update(status)
+    update(privacy_status: status)
   end
 end

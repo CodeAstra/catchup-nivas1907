@@ -4,13 +4,11 @@ before_action :authenticate_user!
   def show
     @user=User.find(params[:id])
     @posts=@user.posts.order(created_at: :desc)
-    @like=Like.all
     @friends_count=@user.accepted_friends_ids.size
   end
 
   def edit
     @user=current_user
-    #@user=User.find(params[:id])
   end
 
   def update
@@ -28,8 +26,8 @@ before_action :authenticate_user!
 
   def privacy
     val=(params[:user][:privacy_status].to_i)
-    @user=User.find(current_user.id)
-    if @user.update(privacy_status: val)
+    @user=current_user
+    if current_user.privacy_update(val)
       respond_to do |format|
         format.html { redirect_to account_path(params[:id])  }
         format.turbo_stream { flash[:notice] = "Privacy option is successfully updated." }

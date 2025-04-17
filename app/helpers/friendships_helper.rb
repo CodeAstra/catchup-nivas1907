@@ -11,7 +11,11 @@ module FriendshipsHelper
     current_user.received.pending.exists?(sender_id: id)
   end
 
-  def getid(id)
-    current_user.received.pending.where(sender_id: id).first
+  def getid(id, status)
+    if status=="received"
+      current_user.received.pending.where(sender_id: id).first
+    else
+      current_user.sent.rejected.where(reciver_id: id).first
+    end
   end
 end

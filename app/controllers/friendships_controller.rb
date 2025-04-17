@@ -10,21 +10,11 @@ class FriendshipsController < ApplicationController
   end
 
   def create
-    @user=User.find(params[:fid])
-    if  Friendship.rejected.exists?(reciver_id: params[:fid], sender_id: current_user.id)
-      id=Friendship.rejected.where(reciver_id: params[:fid], sender_id: current_user.id).first.id
-      Friendship.find(id).update_status(Friendship.friendship_statuses[:pending])
-      respond_to do |format|
-        format.html { redirect_to new_friend_path }
-        format.turbo_stream { flash[:notice] = "Friend request sent." }
-      end
-    else
       Friendship.create(reciver_id: params[:fid], sender_id: current_user.id, friendship_status: Friendship.friendship_statuses[:pending])
       respond_to do |format|
         format.html { redirect_to new_friend_path }
         format.turbo_stream { flash[:notice] = "Friend request sent." }
       end
-    end
   end
 
   def update
@@ -37,22 +27,20 @@ class FriendshipsController < ApplicationController
   end
 
   def pending_requests
-    @pendingfriends_ids=current_user.pending_friends_ids
-    @pendingfriends=User.where(id: @pendingfriends_ids)
+    @pendingfriends=User.where(id: current_user.pending_friends_ids)
   end
 
   def search
     @input=params[:search]
-    @confirmed_ids=current_user.accepted_friends_ids
-    @users=User.where(id: @confirmed_ids)
-      @users=@users.where("users.username LIKE ?", [ "%#{@input}%" ]).or(@users.where("email LIKE ? ", "%#{@input}%"))
-      render "index"
+    @users=User.where(id: current_user.accepted_friends_ids)
+    @users=@users.where("users.username LIKE ?", [ "%#{@input}%" ]).or(@users.where("email LIKE ? ", "%#{@input}%"))
+    render "index"
   end
 
   def search2
     @input=params[:search]
     @user=User.where.not(id: current_user.id).where.not(id: current_user.friendships.where(status: "accepted").pluck(:reciver_id))
-      @user=@user.where("username LIKE ? ", "%#{@input}%").or(@user.where("email LIKE ? ", "%#{@input}%"))
-      render "new"
+    @user=@user.where("username LIKE ? ", "%#{@input}%").or(@user.where("email LIKE ? ", "%#{@input}%"))
+    render "new"
   end
 end
