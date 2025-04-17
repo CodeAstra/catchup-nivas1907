@@ -22,7 +22,6 @@ class PostsController < ApplicationController
   end
 
   def update
-    # @user=current_user
     @post=Post.find(params[:id])
     @post.update(post_params)
     respond_to do |format|

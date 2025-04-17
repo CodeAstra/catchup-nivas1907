@@ -1,7 +1,14 @@
-<%= turbo_stream.replace "account_privacy"  do%>
-    <%=form_with model: current_user ,url:privacy_account_index_path,method: :patch do |f| %>
-      <%= f.select :privacy_status,options_for_select(User.privacy_statuses,   :selected => current_user.privacy_status)  %>
-      <%= f.submit %>
-    <%end%>
+<%if @valid %>
+
+  <%= turbo_stream.replace "account_privacy"  do%>
+  
+      <%=form_with model: current_user ,url:privacy_account_index_path,method: :patch do |f| %>
+        <%= f.select :privacy_status,options_for_select(User.privacy_statuses,   :selected => current_user.privacy_status)  %>
+        <%= f.submit %>
+      <%end%>
+
+  <%end%>
+
 <%end%>
+
 <%= render_turbo_stream_flash_message %>

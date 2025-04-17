@@ -5,15 +5,15 @@
    <%= f.submit "Search" %>
 <% end %>
 
-<% @users.each do |u| %>
+<% @friends_listeach do |u| %>
 
     <% if u.avatar.attached? %>
         <img src="<%=url_for(u.avatar)%>" class="avatar" />
         <h1></h1>
     <%end%>
-        <%= link_to  (
-        u.username||u.email
-        ), account_path(u.id) , method: :get , data: { turbo_frame: "_top" } %>
+    <%= link_to  (
+    u.username||u.email
+    ), account_path(u.id) , method: :get , data: { turbo_frame: "_top" } %>
 
     <h1></h1>
 <%end%>

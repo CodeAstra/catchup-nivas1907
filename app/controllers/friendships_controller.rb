@@ -1,13 +1,12 @@
 class FriendshipsController < ApplicationController
   before_action :authenticate_user!
+  before_action :not_friends_list, only: [ :new, :search2 ]
+  before_action :friends_list, only: [ :index, :search ]
   def index
-    @users=User.where(id: current_user.accepted_friends_ids)
-    @pending_list_count=current_user.pending_friends_ids.size
+    @pending_list_count = current_user.pending_friends_ids.count
   end
 
-  def new
-    @user=User.where.not(id: current_user.id).where.not(id: current_user.accepted_friends_ids)
-  end
+  def new; end
 
   def create
       Friendship.create(reciver_id: params[:fid], sender_id: current_user.id, friendship_status: Friendship.friendship_statuses[:pending])
@@ -18,29 +17,36 @@ class FriendshipsController < ApplicationController
   end
 
   def update
-    if Friendship.find(params[:id]).update_status(params[:status].to_i)
-      respond_to do |format|
-        format.html { redirect_to friends_path }
-        format.turbo_stream {  flash[:notice] = "Friend request #{params[:status].to_i==1? " accepted" : "rejected " }" }
-      end
+    Friendship.find(params[:id]).update_status(params[:status].to_i)
+    respond_to do |format|
+      format.html { redirect_to friends_path }
+      format.turbo_stream {  flash[:notice] = "Friend request #{params[:status].to_i==1? " accepted" : "rejected " }" }
     end
   end
 
   def pending_requests
-    @pendingfriends=User.where(id: current_user.pending_friends_ids)
+    @pendingfriends = User.where(id: current_user.pending_friends_ids)
   end
 
   def search
-    @input=params[:search]
-    @users=User.where(id: current_user.accepted_friends_ids)
-    @users=@users.where("users.username LIKE ?", [ "%#{@input}%" ]).or(@users.where("email LIKE ? ", "%#{@input}%"))
+    @input = params[:search]
+    @friends_list = @friends_list.where("users.username LIKE ?", [ "%#{@input}%" ]).or(@friends_list.where("email LIKE ? ", "%#{@input}%"))
     render "index"
   end
 
   def search2
-    @input=params[:search]
-    @user=User.where.not(id: current_user.id).where.not(id: current_user.friendships.where(status: "accepted").pluck(:reciver_id))
-    @user=@user.where("username LIKE ? ", "%#{@input}%").or(@user.where("email LIKE ? ", "%#{@input}%"))
+    @input = params[:search]
+    @not_friends_list = @not_friends_list.where("username LIKE ? ", "%#{@input}%").or(@not_friends_list.where("email LIKE ? ", "%#{@input}%"))
     render "new"
+  end
+
+private
+
+  def not_friends_list
+    @not_friends_list = User.where.not(id: current_user.id).where.not(id: current_user.accepted_friends_ids)
+  end
+
+  def friends_list
+    @friends_list = User.where(id: current_user.accepted_friends_ids)
   end
 end
