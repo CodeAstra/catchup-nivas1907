@@ -1,5 +1,5 @@
 module FriendshipsHelper
-  def check(id)
+  def sentrequest(id)
    current_user.sent.pending.exists?(reciver_id: id)
   end
 

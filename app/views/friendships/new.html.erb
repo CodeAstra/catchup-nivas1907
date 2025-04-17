@@ -14,7 +14,7 @@
     ), account_path(u.id) , method: :get, data: { turbo_frame: "_top" } %>
     <h1></h1>
     <%= turbo_frame_tag "friendbutton_#{u.id}" do%>
-        <% if check(u.id) %>
+        <% if sentrequest(u.id) %>
             <%= button_to "Pending" %>
         <% elsif pendingrequest(u.id) %>
             <% idi=getid(u.id,"received")  %>
