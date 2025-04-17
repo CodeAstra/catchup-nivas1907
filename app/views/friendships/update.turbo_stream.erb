@@ -1,10 +1,14 @@
-<% if request.referer == "http://localhost:3000/friendships/new" %>
-    <%= turbo_stream.remove "friends_#{params[:sender_id]}"%>
-<%elsif request.referer ==  "http://localhost:3000/account/#{params[:sender_id]}" %>
-    <%= turbo_stream.remove "accountpage_#{params[:sender_id]}"  %>
-    
-<% else %>
-    <%= turbo_stream.remove "pendingpage_#{params[:sender_id]}" %>
+<% if @valid %>
+
+  <% if request.referer == "http://localhost:3000/friendships/new" %>
+      <%= turbo_stream.remove "friends_#{params[:sender_id]}"%>
+  <%elsif request.referer ==  "http://localhost:3000/account/#{params[:sender_id]}" %>
+      <%= turbo_stream.remove "accountpage_#{params[:sender_id]}"  %>
+      
+  <% else %>
+      <%= turbo_stream.remove "pendingpage_#{params[:sender_id]}" %>
+  <%end%>
+  
 <%end%>
 
 <%= render_turbo_stream_flash_message %>

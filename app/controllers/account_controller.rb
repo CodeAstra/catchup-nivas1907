@@ -12,8 +12,8 @@ class AccountController < ApplicationController
   def update
     @valid = current_user.update(account_params)
     respond_to do |format|
-      format.html { redirect_to valid ?  account_path(params[:id]): edit_account_path }
-      format.turbo_stream { flash[:notice] = @valid ? "Account details are successfully updated.": "You are not authorized to update" }
+      format.html { redirect_to @valid ?  account_path(params[:id]): edit_account_path }
+      format.turbo_stream { flash[:notice] = @valid ? "Account details are successfully updated." : "You are not authorized to update" }
     end
   end
 
@@ -21,7 +21,7 @@ class AccountController < ApplicationController
     @valid = current_user.privacy_update(params[:user][:privacy_status].to_i)
     respond_to do |format|
       format.html { redirect_to account_path(params[:id])  }
-      format.turbo_stream { flash[:notice] = @valid ? "Privacy option is successfully updated.": "You are not authorized to update"  }
+      format.turbo_stream { flash[:notice] = @valid ? "Privacy option is successfully updated." : "You are not authorized to update"  }
     end
   end
 
@@ -35,7 +35,7 @@ class AccountController < ApplicationController
 private
 
   def account_params
-    params.require(:user).permit(:username, :bio, :avatar, :status, :privacy_status)
+    params.require(:user).permit(:username, :bio, :avatar)
   end
 
   def find_user

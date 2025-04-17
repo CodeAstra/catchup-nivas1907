@@ -19,11 +19,11 @@ class FriendshipsController < ApplicationController
 
   def update
     @friend=Friendship.find(params[:id])
-    valid= (current_user==@friend.sender || current_user==@friend.reciver)
+    @valid= (current_user==@friend.sender || current_user==@friend.reciver)
     @friend.update_status(params[:status].to_i)
     respond_to do |format|
       format.html { redirect_to friends_path }
-      format.turbo_stream {  flash[:notice] = valid ? "Friend request #{params[:status].to_i==1? " accepted" : "rejected " }": "In valid Request" }
+      format.turbo_stream {  flash[:notice] = @valid ? "Friend request #{params[:status].to_i==1? " accepted" : "rejected " }": "In valid Request" }
     end
   end
 
