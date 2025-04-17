@@ -2,6 +2,7 @@ class FriendshipsController < ApplicationController
   before_action :authenticate_user!
   before_action :not_friends_list, only: [ :new, :search2 ]
   before_action :friends_list, only: [ :index, :search ]
+
   def index
     @pending_list_count = current_user.pending_friends_ids.count
   end
@@ -17,10 +18,12 @@ class FriendshipsController < ApplicationController
   end
 
   def update
-    Friendship.find(params[:id]).update_status(params[:status].to_i)
+    @friend=Friendship.find(params[:id])
+    valid= (current_user==@friend.sender || current_user==@friend.reciver)
+    @friend.update_status(params[:status].to_i)
     respond_to do |format|
       format.html { redirect_to friends_path }
-      format.turbo_stream {  flash[:notice] = "Friend request #{params[:status].to_i==1? " accepted" : "rejected " }" }
+      format.turbo_stream {  flash[:notice] = valid ? "Friend request #{params[:status].to_i==1? " accepted" : "rejected " }": "In valid Request" }
     end
   end
 

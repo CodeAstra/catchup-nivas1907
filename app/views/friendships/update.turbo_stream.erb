@@ -6,4 +6,5 @@
 <% else %>
     <%= turbo_stream.remove "pendingpage_#{params[:sender_id]}" %>
 <%end%>
+
 <%= render_turbo_stream_flash_message %>

@@ -1,4 +1,5 @@
 <%= turbo_stream.replace "fbutton_#{params[:fid]}" do %>
     <%= button_to "Pending" %> 
 <%end%>
+
 <%= render_turbo_stream_flash_message %>

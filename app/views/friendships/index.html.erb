@@ -5,7 +5,7 @@
    <%= f.submit "Search" %>
 <% end %>
 
-<% @friends_listeach do |u| %>
+<% @friends_list.each do |u| %>
 
     <% if u.avatar.attached? %>
         <img src="<%=url_for(u.avatar)%>" class="avatar" />

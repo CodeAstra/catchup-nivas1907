@@ -2,7 +2,7 @@
 <% @h.each do |key,value| %>
     <p>Trending Value: <%=value%> </p>
 
-    <% p=@posts.find(key).first %>
+    <% p=@posts.find(key) %>
     <%= link_to  (
         p.user.username
         ), account_path(p.user_id) , method: :get %>
