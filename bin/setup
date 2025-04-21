@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby.exe
 require "fileutils"
 
-APP_ROOT = File.expand_path("..", __dir__)
+APP_ROOT=File.expand_path("..", __dir__)
 
 def system!(*args)
   system(*args, exception: true)

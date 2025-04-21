@@ -2,7 +2,7 @@
    <%= f.text_field :search, value: params[:search]  %>
    <%= f.submit "Search" %>
 <%end%>
-<% @not_friends_list.each do |u| %>
+<%  @add_friends_list.each do |u| %>
 <%= turbo_frame_tag "friends_#{u.id}" do%>
 <% if checkf(u.id) %>
     <% if u.avatar.attached? %>

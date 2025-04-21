@@ -13,7 +13,7 @@
 
 require "rubygems"
 
-m = Module.new do
+m=Module.new do
   module_function
 
   def invoked_as_script?
@@ -27,21 +27,21 @@ m = Module.new do
   def cli_arg_version
     return unless invoked_as_script? # don't want to hijack other binstubs
     return unless "update".start_with?(ARGV.first || " ") # must be running `bundle update`
-    bundler_version = nil
-    update_index = nil
+    bundler_version=nil
+    update_index=nil
     ARGV.each_with_index do |a, i|
       if update_index && update_index.succ == i && a.match?(Gem::Version::ANCHORED_VERSION_PATTERN)
-        bundler_version = a
+        bundler_version=a
       end
       next unless a =~ /\A--bundler(?:[= ](#{Gem::Version::VERSION_PATTERN}))?\z/
-      bundler_version = $1
-      update_index = i
+      bundler_version=$1
+      update_index=i
     end
     bundler_version
   end
 
   def gemfile
-    gemfile = ENV["BUNDLE_GEMFILE"]
+    gemfile=ENV["BUNDLE_GEMFILE"]
     return gemfile if gemfile && !gemfile.empty?
 
     File.expand_path("../Gemfile", __dir__)
@@ -58,7 +58,7 @@ m = Module.new do
 
   def lockfile_version
     return unless File.file?(lockfile)
-    lockfile_contents = File.read(lockfile)
+    lockfile_contents=File.read(lockfile)
     return unless lockfile_contents =~ /\n\nBUNDLED WITH\n\s{2,}(#{Gem::Version::VERSION_PATTERN})\n/
     Regexp.last_match(1)
   end
@@ -73,7 +73,7 @@ m = Module.new do
   def bundler_requirement_for(version)
     return "#{Gem::Requirement.default}.a" unless version
 
-    bundler_gem_version = Gem::Version.new(version)
+    bundler_gem_version=Gem::Version.new(version)
 
     bundler_gem_version.approximate_recommendation
   end
@@ -85,11 +85,11 @@ m = Module.new do
   end
 
   def activate_bundler
-    gem_error = activation_error_handling do
+    gem_error=activation_error_handling do
       gem "bundler", bundler_requirement
     end
     return if gem_error.nil?
-    require_error = activation_error_handling do
+    require_error=activation_error_handling do
       require "bundler/version"
     end
     return if require_error.nil? && Gem::Requirement.new(bundler_requirement).satisfied_by?(Gem::Version.new(Bundler::VERSION))

@@ -1,4 +1,4 @@
-<% if @valid %>
+<% if @valid_user %>
 
   <% if request.referer == "http://localhost:3000/friendships/new" %>
       <%= turbo_stream.remove "friends_#{params[:sender_id]}"%>
@@ -8,7 +8,11 @@
   <% else %>
       <%= turbo_stream.remove "pendingpage_#{params[:sender_id]}" %>
   <%end%>
-  
+
+  <% flash[:notice] = "Friend request #{Friendship.friendship_statuses.keys[params[:status].to_i] }"%>
+<%else%>
+
+  <%= flash[:notice] = "Invalid User"%>
 <%end%>
 
 <%= render_turbo_stream_flash_message %>

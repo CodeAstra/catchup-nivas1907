@@ -1,52 +1,72 @@
 <%= turbo_frame_tag "account_#{current_user.id}" do  %>
-<h1>name:<%=@user.username || @user.email[0..-11]  %> </h1>
-<h1>mail:<%=@user.email%> </h1>
-<p>Bio:<%=@user.bio%></p>
-<% if @user.avatar.attached? %>
-<img src="<%=url_for(@user.avatar)%>" class="avatar" />
-<%end%>
-<% if current_user.id ==  @user.id %>
+
+  <h1>name:<%=@user.username || @user.email[0..-11]  %> </h1>
+  <h1>mail:<%=@user.email%> </h1>
+
+  <p>Bio:<%=@user.bio%></p>
+  
+  <% if @user.avatar.attached? %>
+    <img src="<%=url_for(@user.avatar)%>" class="avatar" />
+  <%end%>
+  
+  <% if current_user.id ==  @user.id %>
     <%= button_to "edit" ,edit_account_path(current_user.id),method: :get %>
+
     <%= turbo_frame_tag "account_privacy" do %>
-        <%=form_with model: @user ,url:privacy_account_index_path,method: :patch do |f| %>
-            <%= f.select :privacy_status,options_for_select(User.privacy_statuses,   @user.privacy_status.to_i)  %>
-            <%= f.submit %>
-        <%end%>
+
+      <%=form_with model: @user ,url:privacy_account_index_path,method: :patch do |f| %>
+        <%= f.select :privacy_status,options_for_select(User.privacy_statuses,   @user.privacy_status.to_i)  %>
+        <%= f.submit %>
+      <%end%>
+
     <%end%>
-<% else %>
-     <%= turbo_frame_tag "friendbutton_#{@user.id}" do%>
-        <% if pendingrequest(@user.id) %>
-            <% idi=getid(@user.id,"received")  %>
-            <%= turbo_frame_tag "accountpage_#{@user.id}" do%>
-                <%= button_to "accept",friendship_path(idi,sender_id: @user.id,status: Friendship.friendship_statuses[:accepted]),method: :patch %>
-                <%= button_to "reject",friendship_path(idi,sender_id: @user.id,status: Friendship.friendship_statuses[:rejected]),method: :patch %>
-            <%end%>
-        <% elsif sentrequest(@user.id) %>
-            <%= button_to "pending" %>
-        <% elsif !isfriend(@user.id) %>
-            <%= turbo_frame_tag "fbutton_#{@user.id}" do%>
-                <%= turbo_frame_tag "fbutton_#{u.id}" do%>
-                  <%if current_user.sent.rejected.exists?(reciver_id: @user.id) %>
-                    <% idi=getid(@user.id,"sent")  %>
-                    <%= button_to "Add Friend(rejected before)",friendship_path(idi,sender_id: current_user.id,status: Friendship.friendship_statuses[:pending]),method: :patch %>
-                  <%else%>
-                    <%= button_to "Add Friend",friendships_path(fid:u.id),method: :post %>
-                  <%end%>
-                <%end%>
-            <%end%>
+
+  <% else %>
+
+    <%= turbo_frame_tag "friendbutton_#{@user.id}" do%>
+      <% if pendingrequest(@user.id) %>
+        <% idi=getid(@user.id,"received") %>
+
+        <%= turbo_frame_tag "accountpage_#{@user.id}" do%>
+          <%= button_to "accept",friendship_path(idi,sender_id: @user.id,status: Friendship.friendship_statuses[:accepted]),method: :patch %>
+          <%= button_to "reject",friendship_path(idi,sender_id: @user.id,status: Friendship.friendship_statuses[:rejected]),method: :patch %>
         <%end%>
-        
+
+      <% elsif sentrequest(@user.id) %>
+        <%= button_to "pending" %>
+
+      <% elsif !isfriend(@user.id) %>
+        <%= turbo_frame_tag "fbutton_#{@user.id}" do%>
+
+          <%if current_user.sent.rejected.exists?(reciver_id: @user.id) %>
+              <% idi=getid(@user.id,"sent")  %>
+              <%= button_to "Add Friend(rejected before)",friendship_path(idi,sender_id: current_user.id,status: Friendship.friendship_statuses[:pending]),method: :patch %>
+          
+          <%else%>
+            <%= button_to "Add Friend",friendships_path(fid:u.id),method: :post %>
+          <%end%> 
+
+        <%end%>
+
+      <%end%>
+          
     <%end%>
+
+  <%end%>
+
 <%end%>
-<%end%>
+
 <p>Post count: <%= @posts.count %> </p>
 <p>Friends count: <%= @friends_count %> </p>
 
 <%if canishow(@user.id) %>
     <h1>Your's Post's</h1>
+
     <% @posts.each do |p| %>
         <p>Title:<%= p.title %></p>
         <p>description:<%= p.description %></p>
+        
          <%= render partial: "likes/like",locals: {post: p} %>
     <%end%>
+
 <%end%>

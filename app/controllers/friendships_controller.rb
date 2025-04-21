@@ -1,6 +1,6 @@
 class FriendshipsController < ApplicationController
   before_action :authenticate_user!
-  before_action :not_friends_list, only: [ :new, :search2 ]
+  before_action :add_friends_list, only: [ :new, :search2 ]
   before_action :friends_list, only: [ :index, :search ]
 
   def index
@@ -10,20 +10,20 @@ class FriendshipsController < ApplicationController
   def new; end
 
   def create
-      Friendship.create(reciver_id: params[:fid], sender_id: current_user.id, friendship_status: Friendship.friendship_statuses[:pending])
-      respond_to do |format|
-        format.html { redirect_to new_friend_path }
-        format.turbo_stream { flash[:notice] = "Friend request sent." }
-      end
+    @friendship=current_user.sent.create(reciver_id: params[:fid], friendship_status: Friendship.friendship_statuses[:pending])
+
+    respond_to do |format|
+      format.html { redirect_to new_friend_path }
+      format.turbo_stream { flash[:notice] = "Friend request sent." }
+    end
   end
 
   def update
-    @friend=Friendship.find(params[:id])
-    @valid= (current_user==@friend.sender || current_user==@friend.reciver)
-    @friend.update_status(params[:status].to_i)
+    @valid_user = current_user.sent.find_by(id: params[:id])&.update_status(params[:status].to_i) || current_user.received.find_by(id: params[:id])&.update_status(params[:status].to_i)
+
     respond_to do |format|
       format.html { redirect_to friends_path }
-      format.turbo_stream {  flash[:notice] = @valid ? "Friend request #{params[:status].to_i==1? " accepted" : "rejected " }": "In valid Request" }
+      format.turbo_stream
     end
   end
 
@@ -33,20 +33,20 @@ class FriendshipsController < ApplicationController
 
   def search
     @input = params[:search]
-    @friends_list = @friends_list.where("users.username LIKE ?", [ "%#{@input}%" ]).or(@friends_list.where("email LIKE ? ", "%#{@input}%"))
+    @friends_list = @friends_list.where("users.username LIKE ? OR email LIKE ?",  "%#{@input}%", "%#{@input}%")
     render "index"
   end
 
   def search2
     @input = params[:search]
-    @not_friends_list = @not_friends_list.where("username LIKE ? ", "%#{@input}%").or(@not_friends_list.where("email LIKE ? ", "%#{@input}%"))
+    @add_friends_list =  @add_friends_list.where("users.username LIKE ? OR email LIKE ?",  "%#{@input}%", "%#{@input}%")
     render "new"
   end
 
 private
 
-  def not_friends_list
-    @not_friends_list = User.where.not(id: current_user.id).where.not(id: current_user.accepted_friends_ids)
+  def add_friends_list
+    @add_friends_list = User.where.not(id: current_user.accepted_friends_ids << current_user.id)
   end
 
   def friends_list

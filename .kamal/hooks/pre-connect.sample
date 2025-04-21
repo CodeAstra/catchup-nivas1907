@@ -13,14 +13,14 @@
 # KAMAL_DESTINATION (if set)
 # KAMAL_RUNTIME
 
-hosts = ENV["KAMAL_HOSTS"].split(",")
-results = nil
-max = 3
+hosts=ENV["KAMAL_HOSTS"].split(",")
+results=nil
+max=3
 
-elapsed = Benchmark.realtime do
-  results = hosts.map do |host|
+elapsed=Benchmark.realtime do
+  results=hosts.map do |host|
     Thread.new do
-      tries = 1
+      tries=1
 
       begin
         Socket.getaddrinfo(host, 0, Socket::AF_UNSPEC, Socket::SOCK_STREAM, nil, Socket::AI_CANONNAME)
@@ -41,7 +41,7 @@ elapsed = Benchmark.realtime do
   end.map(&:value)
 end
 
-retries = results.sum - hosts.size
-nopes = results.count { |r| r == max }
+retries=results.sum - hosts.size
+nopes=results.count { |r| r == max }
 
 puts "Prewarmed %d DNS lookups in %.2f sec: %d retries, %d failures" % [ hosts.size, elapsed, retries, nopes ]

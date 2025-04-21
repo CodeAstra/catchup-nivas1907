@@ -1,4 +1,4 @@
-<%if @valid %>
+<%if @valid_user %>
 
   <%= turbo_stream.replace "account_privacy"  do%>
   
@@ -8,7 +8,9 @@
       <%end%>
 
   <%end%>
-
+  <% flash[:notice]= "Privacy option is successfully updated."  %>
+<%else%>
+   <% flash[:notice]=  "You are not authorized to update" %>
 <%end%>
 
 <%= render_turbo_stream_flash_message %>
