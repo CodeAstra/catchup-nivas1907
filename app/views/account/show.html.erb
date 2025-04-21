@@ -1,43 +1,22 @@
-<%= turbo_frame_tag "account_#{current_user.id}" do  %>
-
-  <h1>name:<%=@user.username || @user.email[0..-11]  %> </h1>
-  <h1>mail:<%=@user.email%> </h1>
-
-  <p>Bio:<%=@user.bio%></p>
-  
-  <% if @user.avatar.attached? %>
-    <img src="<%=url_for(@user.avatar)%>" class="avatar" />
-  <%end%>
-  
+<%= turbo_frame_tag "account_#{current_user.id}" do %>
+  <h1>name:<%= @user.name %> </h1>
+  <h1>mail:<%= @user.email %> </h1>
+  <p>Bio:<%= @user.bio %></p>
+  <%= image_tag url_for(@user.avatar), class: "avatar" if @user.avatar.attached? %>
   <% if current_user.id ==  @user.id %>
-    <%= button_to "edit" ,edit_account_path(current_user.id),method: :get %>
-
-    <%= turbo_frame_tag "account_privacy" do %>
-
-      <%=form_with model: @user ,url:privacy_account_index_path,method: :patch do |f| %>
-        <%= f.select :privacy_status,options_for_select(User.privacy_statuses,   @user.privacy_status.to_i)  %>
-        <%= f.submit %>
-      <%end%>
-
-    <%end%>
-
+    <%= button_to "edit", edit_account_path(current_user.id), method: :get %>
+    <%= render partial: "privacy" %>
   <% else %>
-    <%= render :partial => 'friendships/friendship_action', :locals => {:user => @user} %>
-  <%end%>
-
-<%end%>
-
+    <%= render partial: "friendship_action", locals: { user: @user } %>
+  <% end %>
+<% end %>
 <p>Post count: <%= @posts.count %> </p>
 <p>Friends count: <%= @friends_count %> </p>
-
 <%if canishow(@user.id) %>
-    <h1>Your's Post's</h1>
-
-    <% @posts.each do |p| %>
-        <p>Title:<%= p.title %></p>
-        <p>description:<%= p.description %></p>
-
-         <%= render partial: "likes/like",locals: {post: p} %>
-    <%end%>
-
-<%end%>
+  <h1>Your's Post's</h1>
+  <% @posts.each do |post| %>
+    <p>Title:<%= post.title %></p>
+    <p>description:<%= post.description %></p>
+    <%= render partial: "likes/like", locals: { post: post } %>
+  <% end %>
+<% end %>

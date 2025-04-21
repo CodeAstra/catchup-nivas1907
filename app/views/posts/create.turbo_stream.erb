@@ -1,11 +1,11 @@
-<% if @post.persisted?  %>
-  <%= turbo_stream.prepend "post" do%>
-      <%= render @post %>
-  <%end%>
+<% if @post.persisted? %>
+  <%= turbo_stream.prepend "post" do %>
+    <%= render @post %>
+  <% end %>
   <% flash[:notice] = "Post successfully created" %>
-  <%= turbo_stream.update Post.new, "" %>
-<%else%>
+  <%= turbo_stream.remove Post.new %>
+<%else %>
   <% flash[:notice] = @post.errors.full_messages.to_sentence %>
-<%end%>
+<% end %>
 
 <%= render_turbo_stream_flash_message %>

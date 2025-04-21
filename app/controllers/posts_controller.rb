@@ -48,12 +48,12 @@ class PostsController < ApplicationController
 
 
   def trending
-    @posts=current_user.my_feed
-    @trending_score_hash={}
-    @posts.each do |p|
-      @trending_score_hash[p.id] = p.post_trending_score
+    @posts = current_user.my_feed
+    @trending_score_hsh={}
+    @posts.each do |post|
+      @trending_score_hsh[post.id] = post.post_trending_score
     end
-    @trending_score_hash = @trending_score_hash.sort_by { |k, v| -v }
+    @trending_score_hsh = @trending_score_hsh.sort_by { |k, v| -v }
   end
 
 private

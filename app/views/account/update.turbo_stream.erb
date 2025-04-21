@@ -1,26 +1,14 @@
 <% if @update_success %>
-
   <%= turbo_stream.replace "account_#{current_user.id}" do %>
-    <%= turbo_frame_tag "account_#{current_user.id}" do  %>
-      <h1>name:<%=current_user.username%> </h1>
-      <h1>mail:<%=current_user.email%> </h1>
-      <p>Bio:<%=current_user.bio%></p>
-
-      <% if current_user.avatar.attached? %>
-         <img src="<%=url_for(current_user.avatar)%>" class="avatar" />
-      <%end%>
-
-      <%= button_to "edit" ,edit_account_path(current_user.id),method: :get %>
-
-      <%=form_with model: current_user ,url:privacy_account_index_path,method: :patch do |f| %>
-          <%= f.select :privacy_status, User.privacy_statuses, selected: current_user.privacy_status %>
-          <%= f.submit %>
-      <%end%>
-
-    <%end%>
-    
-  <%end%>
-
-<%end%>
+    <%= turbo_frame_tag "account_#{current_user.id}" do %>
+      <h1>name:<%= current_user.name %> </h1>
+      <h1>mail:<%= current_user.email %> </h1>
+      <p>Bio:<%= current_user.bio %></p>
+      <%= image_tag url_for(current_user.avatar), class: "avatar" if current_user.avatar.attached? %>
+      <%= button_to "edit", edit_account_path(current_user.id), method: :get %>
+      <%= render partial: "privacy" %>
+    <% end %>
+  <% end %>
+<% end %>
 
 <%= render_turbo_stream_flash_message %>

@@ -1,5 +1,5 @@
-<%= button_to "Add a post", new_post_path, data:{turbo_frame: dom_id(Post.new)},  method: :get %>
-<%= turbo_frame_tag Post.new  %>  
-<%= turbo_frame_tag "post" do%>  
-    <%= render @posts %>
-<%end%>
+<%= button_to "Add a post", new_post_path, data: { turbo_frame: dom_id(Post.new) }, method: :get %>
+<%= turbo_frame_tag Post.new %>  
+<%= turbo_frame_tag "post" do %>  
+  <%= render @posts %>
+<% end %>

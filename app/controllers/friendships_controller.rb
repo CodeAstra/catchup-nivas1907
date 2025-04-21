@@ -31,14 +31,14 @@ class FriendshipsController < ApplicationController
   end
 
   def search
-    if params[:val].to_i==1
+    if params[:type] == "friends"
       @input = params[:search].strip()
-      @friends_list = @friends_list.where("users.username LIKE ? OR email LIKE ?",  "%#{@input}%", "%#{@input}%")
+      @friends_list = @friends_list.where("users.username LIKE ? OR email LIKE ?", "%#{@input}%", "%#{@input}%")
 
       render "index"
     else
       @input = params[:search].strip()
-      @add_friends_list =  @add_friends_list.where("users.username LIKE ? OR email LIKE ?",  "%#{@input}%", "%#{@input}%")
+      @add_friends_list =  @add_friends_list.where("users.username LIKE ? OR email LIKE ?", "%#{@input}%", "%#{@input}%")
 
       render "new"
     end

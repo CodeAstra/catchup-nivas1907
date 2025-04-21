@@ -1,0 +1,8 @@
+<%= form_with model: post ,url: form_path , method: form_method do |f| %>
+  <%= f.label :title, placeholder: "title", :class => "form_control" %>
+  <%= f.text_field :title %>
+  <%= f.label "description", placeholder: "description", :class => "form_box" %>
+  <%= f.text_field :description %>
+  <%= f.submit %>
+<% end %>
+<%= button_to "cancel", cancel_posts_path,method: :get %>

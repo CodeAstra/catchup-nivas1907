@@ -5,6 +5,7 @@ class LikesController < ApplicationController
   def create
     @like= @post.likes.create(user_id: current_user.id)
     flash[:notice]="Liked the post"
+
     respond_to do |format|
       format.html { redirect_to posts_path }
       format.turbo_stream
@@ -12,9 +13,10 @@ class LikesController < ApplicationController
   end
 
   def destroy
-    @like=@post.likes.find_by(id: params[:id])
-    @like.destroy
+    like=@post.likes.find_by(id: params[:id])
+    like.destroy
     flash[:notice]="Unliked the post"
+
     respond_to do |format|
       format.html { redirect_to posts_path }
       format.turbo_stream

@@ -2,9 +2,9 @@ class AccountController < ApplicationController
   before_action :authenticate_user!
 
   def show
-    @user=User.find(params[:id])
-    @posts=@user.posts.order(created_at: :desc)
-    @friends_count=@user.accepted_friends_ids.count
+    @user = User.find(params[:id])
+    @posts = @user.posts.order(created_at: :desc)
+    @friends_count = @user.accepted_friends_ids.count
   end
 
   def edit; end

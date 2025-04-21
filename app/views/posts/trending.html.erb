@@ -1,23 +1,11 @@
 <h1>Trending's page </h1>
-<% @trending_score_hash.each do |key,value| %>
-    <p>Trending Value: <%=value%> </p>
-
-    <% p=@posts.find(key) %>
-    <%= link_to  (
-        p.user.username
-        ), account_path(p.user_id) , method: :get %>
-    <% if p.user.avatar.attached? %>
-        <img src="<%=url_for(p.user.avatar)%>" class="avatar" />
-    <%end%>
-    <p style="block:flex;" >Title:<%= p.title %></p>
-    <%= time_ago_in_words(p.created_at) %>
-    <p>description:<%= p.description %></p>
-    <%=turbo_frame_tag "like_#{p.id}" do %>
-        <% if p.likes.exists?(user_id:current_user) %>
-            <%= button_to "Unlike",post_like_path(post_id: p.id,id: p.likes.find_by(user_id: current_user.id).id),method: :delete %>
-        <%else%>
-             <%= button_to "Like",post_likes_path(p.id),method: :post %>
-        <%end%>
-        <%= render partial: "likes/like",locals: {post: p} %>
-    <%end%>
-<%end%>
+<% @trending_score_hsh.each do |key,value| %>
+  <p>Trending Value: <%= value %> </p>
+  <% post = @posts.find(key) %>
+  <%= link_to post.user.name, account_path(post.user_id), method: :get %>
+  <%= image_tag url_for(post.user.avatar), class: "avatar" if post.user.avatar.attached? %>
+  <p style="block:flex;" >Title:<%= post.title %></p>
+  <%= time_ago_in_words(post.created_at) %>
+  <p>description:<%= post.description %></p>
+  <%= render partial: "likes/like", locals: {post: post} %>
+<% end %>

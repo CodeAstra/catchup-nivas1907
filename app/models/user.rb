@@ -31,6 +31,10 @@ class User < ApplicationRecord
     Post.where(user_id:  accepted_friends_ids << id).order(created_at: :desc)
   end
 
+  def name
+    username || email[0..-11]
+  end
+
   def privacy_update(status)
     update(privacy_status: status)
   end
