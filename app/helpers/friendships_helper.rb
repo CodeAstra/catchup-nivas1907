@@ -11,6 +11,10 @@ module FriendshipsHelper
     current_user.received.pending.exists?(sender_id: id)
   end
 
+  def isfriend(id)
+    current_user.accepted_friends_ids.include?(id)
+  end
+
   def getid(id, status)
     if status=="received"
       current_user.received.pending.where(sender_id: id).first

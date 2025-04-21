@@ -22,36 +22,7 @@
     <%end%>
 
   <% else %>
-
-    <%= turbo_frame_tag "friendbutton_#{@user.id}" do%>
-      <% if pendingrequest(@user.id) %>
-        <% idi=getid(@user.id,"received") %>
-
-        <%= turbo_frame_tag "accountpage_#{@user.id}" do%>
-          <%= button_to "accept",friendship_path(idi,sender_id: @user.id,status: Friendship.friendship_statuses[:accepted]),method: :patch %>
-          <%= button_to "reject",friendship_path(idi,sender_id: @user.id,status: Friendship.friendship_statuses[:rejected]),method: :patch %>
-        <%end%>
-
-      <% elsif sentrequest(@user.id) %>
-        <%= button_to "pending" %>
-
-      <% elsif !isfriend(@user.id) %>
-        <%= turbo_frame_tag "fbutton_#{@user.id}" do%>
-
-          <%if current_user.sent.rejected.exists?(reciver_id: @user.id) %>
-              <% idi=getid(@user.id,"sent")  %>
-              <%= button_to "Add Friend(rejected before)",friendship_path(idi,sender_id: current_user.id,status: Friendship.friendship_statuses[:pending]),method: :patch %>
-          
-          <%else%>
-            <%= button_to "Add Friend",friendships_path(fid:u.id),method: :post %>
-          <%end%> 
-
-        <%end%>
-
-      <%end%>
-          
-    <%end%>
-
+    <%= render :partial => 'friendships/friendship_action', :locals => {:user => @user} %>
   <%end%>
 
 <%end%>
@@ -65,7 +36,7 @@
     <% @posts.each do |p| %>
         <p>Title:<%= p.title %></p>
         <p>description:<%= p.description %></p>
-        
+
          <%= render partial: "likes/like",locals: {post: p} %>
     <%end%>
 

@@ -2,35 +2,18 @@
    <%= f.text_field :search, value: params[:search]  %>
    <%= f.submit "Search" %>
 <%end%>
-<%  @add_friends_list.each do |u| %>
-<%= turbo_frame_tag "friends_#{u.id}" do%>
-<% if checkf(u.id) %>
-    <% if u.avatar.attached? %>
-        <img src="<%=url_for(u.avatar)%>" class="avatar" />
+<%  @add_friends_list.each do |user| %>
+<%= turbo_frame_tag "friends_#{user.id}" do%>
+<% if checkf(user.id) %>
+    <% if user.avatar.attached? %>
+        <img src="<%=url_for(user.avatar)%>" class="avatar" />
         <h1></h1>
     <%end%>
     <%= link_to  (
-    u.username||u.email
-    ), account_path(u.id) , method: :get, data: { turbo_frame: "_top" } %>
+    user.username||user.email
+    ), account_path(user.id) , method: :get, data: { turbo_frame: "_top" } %>
     <h1></h1>
-    <%= turbo_frame_tag "friendbutton_#{u.id}" do%>
-        <% if sentrequest(u.id) %>
-            <%= button_to "Pending" %>
-        <% elsif pendingrequest(u.id) %>
-            <% idi=getid(u.id,"received")  %>
-            <%= button_to "accept",friendship_path(idi,sender_id: u.id,status: Friendship.friendship_statuses[:accepted]),method: :patch %>
-            <%= button_to "reject",friendship_path(idi,sender_id: u.id,status: Friendship.friendship_statuses[:rejected]),method: :patch %>
-        <%else%>
-             <%= turbo_frame_tag "fbutton_#{u.id}" do%>
-                  <%if current_user.sent.rejected.exists?(reciver_id: u.id) %>
-                    <% idi=getid(u.id,"sent")  %>
-                    <%= button_to "Add Friend(rejected before)",friendship_path(idi,sender_id: current_user.id,status: Friendship.friendship_statuses[:pending]),method: :patch %>
-                  <%else%>
-                    <%= button_to "Add Friend",friendships_path(fid:u.id),method: :post %>
-                  <%end%>
-            <%end%>
-        <%end%>
-    <%end%>
+    <%= render :partial => 'friendships/friendship_action', :locals => {:user => user} %>
 <h1></h1>
 <%end%>
 <%end%>
