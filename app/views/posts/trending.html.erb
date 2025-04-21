@@ -1,5 +1,5 @@
 <h1>Trending's page </h1>
-<% @h.each do |key,value| %>
+<% @trending_score_hash.each do |key,value| %>
     <p>Trending Value: <%=value%> </p>
 
     <% p=@posts.find(key) %>

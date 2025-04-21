@@ -1,4 +1,4 @@
-<% if @valid_user %>
+<% if @update_success %>
 
   <%= turbo_stream.replace "account_#{current_user.id}" do %>
     <%= turbo_frame_tag "account_#{current_user.id}" do  %>
@@ -16,7 +16,9 @@
           <%= f.select :privacy_status, User.privacy_statuses, selected: current_user.privacy_status %>
           <%= f.submit %>
       <%end%>
+
     <%end%>
+    
   <%end%>
 
 <%end%>

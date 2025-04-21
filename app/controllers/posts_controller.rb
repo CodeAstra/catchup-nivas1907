@@ -22,7 +22,7 @@ class PostsController < ApplicationController
   def edit; end
 
   def update
-    @valid_user = @post.update(post_params)
+    @update_success = @post.update(post_params)
 
     respond_to do |format|
       format.html { redirect_to posts_path }
@@ -31,7 +31,7 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    @valid_user = @post.destroy
+    @destroy_success = @post.destroy
 
     respond_to do |format|
       format.html { redirect_to posts_path }
@@ -49,11 +49,11 @@ class PostsController < ApplicationController
 
   def trending
     @posts=current_user.my_feed
-    @h={}
+    @trending_score_hash={}
     @posts.each do |p|
-      @h[p.id] = p.post_trending_score
+      @trending_score_hash[p.id] = p.post_trending_score
     end
-    @h=@h.sort_by { |k, v| -v }
+    @trending_score_hash = @trending_score_hash.sort_by { |k, v| -v }
   end
 
 private

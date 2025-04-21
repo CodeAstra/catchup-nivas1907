@@ -7,13 +7,13 @@ class AccountController < ApplicationController
     @friends_count=@user.accepted_friends_ids.count
   end
 
-  def edit;end
+  def edit; end
 
   def update
-    @valid_user = current_user.update(account_params)
+    @update_success = current_user.update(account_params)
 
     respond_to do |format|
-      if @valid_user
+      if @update_success
         format.html { redirect_to account_path(current_user) }
         format.turbo_stream { flash[:notice] =  "Account details are successfully updated." }
       else
@@ -24,7 +24,7 @@ class AccountController < ApplicationController
   end
 
   def privacy
-    @valid_user = current_user.privacy_update(params[:user][:privacy_status].to_i)
+    @privacy_success = current_user.privacy_update(params[:user][:privacy_status].to_i)
 
     respond_to do |format|
       format.html { redirect_to account_path(current_user)  }

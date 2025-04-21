@@ -1,7 +1,7 @@
-<% if @valid_user %>
+<% if @destroy_success %>
   <%= turbo_stream.remove "post_#{@post.id}" %>
   <% flash[:notice] = "Post was successfully deleted." %>
 <%else%>
-  <% flash[:notice] = "Your are not authorized" %>
+  <% flash[:notice] = @post.errors.full_messages.to_sentence %>
 <%end%>
 <%= render_turbo_stream_flash_message %>

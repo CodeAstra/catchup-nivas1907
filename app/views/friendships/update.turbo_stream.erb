@@ -1,4 +1,4 @@
-<% if @valid_user %>
+<% if @update_success %>
 
   <% if request.referer == "http://localhost:3000/friendships/new" %>
       <%= turbo_stream.remove "friends_#{params[:sender_id]}"%>

@@ -1,5 +1,6 @@
-<%= form_with url: search2_friendships_path, method: :get do |f| %>
+<%= form_with url: search_friendships_path, method: :get do |f| %>
    <%= f.text_field :search, value: params[:search]  %>
+   <%= f.hidden_field :val , value: 2 %>
    <%= f.submit "Search" %>
 <%end%>
 <%  @add_friends_list.each do |user| %>

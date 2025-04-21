@@ -1,16 +1,14 @@
 class FriendshipsController < ApplicationController
   before_action :authenticate_user!
-  before_action :add_friends_list, only: [ :new, :search2 ]
+  before_action :add_friends_list, only: [ :new, :search ]
   before_action :friends_list, only: [ :index, :search ]
 
-  def index
-    @pending_list_count = current_user.pending_friends_ids.count
-  end
+  def index; end
 
   def new; end
 
   def create
-    @friendship=current_user.sent.create(reciver_id: params[:fid], friendship_status: Friendship.friendship_statuses[:pending])
+    @friendship = current_user.sent.create(reciver_id: params[:fid])
 
     respond_to do |format|
       format.html { redirect_to new_friend_path }
@@ -19,7 +17,8 @@ class FriendshipsController < ApplicationController
   end
 
   def update
-    @valid_user = current_user.sent.find_by(id: params[:id])&.update_status(params[:status].to_i) || current_user.received.find_by(id: params[:id])&.update_status(params[:status].to_i)
+    friendship = current_user.sent.find_by(id: params[:id])  || current_user.received.find_by(id: params[:id])
+    @update_success = friendship&.update_status(params[:status].to_i)
 
     respond_to do |format|
       format.html { redirect_to friends_path }
@@ -28,20 +27,23 @@ class FriendshipsController < ApplicationController
   end
 
   def pending_requests
-    @pendingfriends = User.where(id: current_user.pending_friends_ids)
+    @pending_requests = User.where(id: current_user.pending_friends_ids)
   end
 
   def search
-    @input = params[:search]
-    @friends_list = @friends_list.where("users.username LIKE ? OR email LIKE ?",  "%#{@input}%", "%#{@input}%")
-    render "index"
+    if params[:val].to_i==1
+      @input = params[:search].strip()
+      @friends_list = @friends_list.where("users.username LIKE ? OR email LIKE ?",  "%#{@input}%", "%#{@input}%")
+
+      render "index"
+    else
+      @input = params[:search].strip()
+      @add_friends_list =  @add_friends_list.where("users.username LIKE ? OR email LIKE ?",  "%#{@input}%", "%#{@input}%")
+
+      render "new"
+    end
   end
 
-  def search2
-    @input = params[:search]
-    @add_friends_list =  @add_friends_list.where("users.username LIKE ? OR email LIKE ?",  "%#{@input}%", "%#{@input}%")
-    render "new"
-  end
 
 private
 

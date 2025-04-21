@@ -1,4 +1,4 @@
-<% if @valid_user %>
+<% if @update_success %>
   <%= turbo_stream.replace "post_#{@post.id}" do %>
       <%= render @post %>
   <%end%>

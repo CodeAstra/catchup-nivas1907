@@ -21,7 +21,6 @@ Rails.application.routes.draw do
     collection do
       get :pending_requests
       get :search
-      get :search2
     end
   end
 
