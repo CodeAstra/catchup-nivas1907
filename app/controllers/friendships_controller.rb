@@ -17,9 +17,16 @@ class FriendshipsController < ApplicationController
   end
 
   def update
-    friendship = current_user.sent.find_by(id: params[:id])  || current_user.received.find_by(id: params[:id])
-    @update_success = friendship&.update_status(params[:status].to_i)
-
+    @friendship = current_user.sent.find_by(id: params[:id])  || current_user.received.find_by(id: params[:id])
+    @update_success = @friendship&.update_status(params[:status].to_i)
+    @turbo_reference_key = case request.referer.split("/").last
+    when "new"
+      "friends_#{@friendship.sender_id}"
+    when "pending_requests"
+      "pendingpage_#{@friendship.sender_id}"
+    else
+      "accountpage_#{@friendship.sender_id}"
+    end
     respond_to do |format|
       format.html { redirect_to friends_path }
       format.turbo_stream
@@ -31,13 +38,12 @@ class FriendshipsController < ApplicationController
   end
 
   def search
+    @input = params[:search].strip
     if params[:type] == "friends"
-      @input = params[:search].strip()
       @friends_list = @friends_list.where("users.username LIKE ? OR email LIKE ?", "%#{@input}%", "%#{@input}%")
 
       render "index"
     else
-      @input = params[:search].strip()
       @add_friends_list =  @add_friends_list.where("users.username LIKE ? OR email LIKE ?", "%#{@input}%", "%#{@input}%")
 
       render "new"

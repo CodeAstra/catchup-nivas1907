@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "post_#{post.id}" do %>
-  <%= link_to  post.user.name, account_path(post.user_id), method: :get, data: { turbo_frame: "_top" } %>
+  <%= link_to  post.user.name, account_path(post.user), method: :get, data: { turbo_frame: "_top" } %>
   <%= image_tag url_for(post.user.avatar), class: "avatar" if post.user.avatar.attached? %>
   <p>Title:<%= post.title %></p>
   <%= time_ago_in_words(post.created_at) %>

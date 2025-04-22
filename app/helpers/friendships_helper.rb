@@ -1,5 +1,5 @@
 module FriendshipsHelper
-  def sentrequest(id)
+  def sent_request(id)
    current_user.sent.pending.exists?(reciver_id: id)
   end
 
@@ -7,12 +7,12 @@ module FriendshipsHelper
     !current_user.accepted_friends_ids.include?(id)
   end
 
-  def pendingrequest(id)
+  def pending_request(id)
     current_user.received.pending.exists?(sender_id: id)
   end
 
-  def isfriend(id)
-    current_user.accepted_friends_ids.include?(id)
+  def stranger(id)
+    current_user.accepted_friends_ids.exclude?(id)
   end
 
   def pending_list_count

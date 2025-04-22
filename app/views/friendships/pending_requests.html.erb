@@ -4,8 +4,8 @@
     <%= link_to  user.name, account_path(user.id), method: :get, data: { turbo_frame: "_top" } %>
     <h1></h1>
     <% friendship = Friendship.where(reciver_id: current_user.id , sender_id: user.id).first %>
-    <%= button_to "accept", friendship_path(friendship, sender_id: user.id, status: Friendship.friendship_statuses[:accepted]), method: :patch %>
-    <%= button_to "reject", friendship_path(friendship, sender_id: user.id, status: Friendship.friendship_statuses[:rejected]), method: :patch %>
+    <%= button_to "accept", friendship_path(friendship, status: Friendship.friendship_statuses[:accepted]), method: :patch %>
+    <%= button_to "reject", friendship_path(friendship, status: Friendship.friendship_statuses[:rejected]), method: :patch %>
     <p>sent <%= time_ago_in_words(friendship.updated_at) %> ago </p>
     <h1></h1>
   <% end %>

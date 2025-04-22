@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!
-  before_action :get_posts, only: [ :edit, :update, :destroy ]
+  before_action :find_post, only: [ :edit, :update, :destroy ]
 
   def index
     @posts = current_user.my_feed
@@ -51,9 +51,11 @@ class PostsController < ApplicationController
     @posts = current_user.my_feed
     @trending_score_hsh={}
     @posts.each do |post|
-      @trending_score_hsh[post.id] = post.post_trending_score
+      @trending_score_hsh[post.id] = {
+        post: post,
+        score: post.post_trending_score }
     end
-    @trending_score_hsh = @trending_score_hsh.sort_by { |k, v| -v }
+    @trending_score_hsh = @trending_score_hsh.sort_by { |k, v| -v[:score] }
   end
 
 private
@@ -62,7 +64,7 @@ private
     params.require(:post).permit(:title, :description)
   end
 
-  def get_posts
+  def find_post
     @post=current_user.posts.find(params[:id])
   end
 end

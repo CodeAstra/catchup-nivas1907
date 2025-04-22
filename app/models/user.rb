@@ -28,7 +28,7 @@ class User < ApplicationRecord
   end
 
   def my_feed
-    Post.where(user_id:  accepted_friends_ids << id).order(created_at: :desc)
+    Post.where(user_id:  accepted_friends_ids << id).includes(:user).order(created_at: :desc)
   end
 
   def name

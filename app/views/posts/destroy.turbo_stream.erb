@@ -4,4 +4,5 @@
 <%else %>
   <% flash[:notice] = @post.errors.full_messages.to_sentence %>
 <% end %>
+
 <%= render_turbo_stream_flash_message %>

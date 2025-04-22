@@ -1,4 +1,4 @@
-<%= render partial: "search", locals: { search_value: "add_friends" } %>
+<%= render partial: "search", locals: { search_type: "add_friends" } %>
 <% @add_friends_list.each do |user| %>
   <%= turbo_frame_tag "friends_#{user.id}" do %>
     <% if checkf(user.id) %>

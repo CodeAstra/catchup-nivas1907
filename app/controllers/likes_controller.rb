@@ -3,7 +3,7 @@ class LikesController < ApplicationController
   before_action :find_post
 
   def create
-    @like= @post.likes.create(user_id: current_user.id)
+    @like = @post.likes.create(user_id: current_user.id)
     flash[:notice]="Liked the post"
 
     respond_to do |format|
@@ -13,7 +13,7 @@ class LikesController < ApplicationController
   end
 
   def destroy
-    like=@post.likes.find_by(id: params[:id])
+    like = @post.likes.find_by(id: params[:id])
     like.destroy
     flash[:notice]="Unliked the post"
 
