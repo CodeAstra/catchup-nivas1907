@@ -2,13 +2,13 @@
   <% if sent_request(user.id) %>
     <%= button_to "Pending" %>
   <% elsif pending_request(user.id) %>
-    <% idi=getid(user.id, "received") %>
+    <% idi = getid(user.id, "received") %>
     <%= button_to "accept", friendship_path(idi, status: Friendship.friendship_statuses[:accepted]), method: :patch %>
     <%= button_to "reject", friendship_path(idi, status: Friendship.friendship_statuses[:rejected]), method: :patch %>
   <% elsif stranger(user.id) %>
     <%= turbo_frame_tag "fbutton_#{user.id}" do %>
       <%if current_user.sent.rejected.exists?(reciver_id: user.id) %>
-        <% idi=getid(user.id, "sent") %>
+        <% idi = getid(user.id, "sent") %>
         <%= button_to "Add Friend(rejected before)", friendship_path(idi, status: Friendship.friendship_statuses[:pending]), method: :patch %>
       <%else %>
         <%= button_to "Add Friend", friendships_path(fid:user.id), method: :post %>
