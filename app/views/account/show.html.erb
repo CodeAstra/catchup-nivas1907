@@ -19,6 +19,6 @@
   <% @posts.each do |post| %>
     <p>Title:<%= post.title %></p>
     <p>description:<%= post.description %></p>
-    <%= render partial: "likes/like", locals: { post: post } %>
+    <p>Likes count: <%= post.likes_count %> </p>
   <% end %>
 <% end %>

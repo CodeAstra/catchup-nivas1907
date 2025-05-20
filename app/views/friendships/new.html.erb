@@ -1,12 +1,10 @@
 <%= render partial: "search", locals: { search_type: "add_friends" } %>
 <% @add_friends_list.each do |user| %>
   <%= turbo_frame_tag "friends_#{user.id}" do %>
-    <% if checkf(user.id) %>
-      <%= image_tag url_for(user.avatar), class: "avatar" if user.avatar.attached? %>
-      <%= link_to  user.name, account_path(user.id), method: :get, data: { turbo_frame: "_top" } %>
-      <h1></h1>
-      <%= render partial: "friendship_action", locals: { user: user } %>
-      <h1></h1>
-    <% end %>
+    <%= image_tag url_for(user.avatar), class: "avatar" if user.avatar.attached? %>
+    <%= link_to  user.name, account_path(user.id), method: :get, data: { turbo_frame: "_top" } %>
+    <h1></h1>
+    <%= render partial: "friendship_action", locals: { user: user } %>
+    <h1></h1>
   <% end %>
 <% end %>
