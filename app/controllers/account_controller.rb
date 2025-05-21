@@ -24,12 +24,7 @@ class AccountController < ApplicationController
   end
 
   def privacy
-    @privacy_success = current_userupdate(privacy_status: params[:user][:privacy_status].to_i)
-
-    respond_to do |format|
-      format.html { redirect_to account_path(current_user)  }
-      format.turbo_stream
-    end
+    @privacy_success = current_user.update(privacy_status: params[:user][:privacy_status].to_i)
   end
 
   def cancel

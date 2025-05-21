@@ -27,12 +27,22 @@ class User < ApplicationRecord
   end
 
   def one_layer_friends_ids
-   ids = accepted_friends_ids
-   Friendship.accepted.where(sender_id: ids).pluck(:reciver_id) + Friendship.accepted.where(reciver_id: ids).pluck(:sender_id)
+    ids = accepted_friends_ids
+    second_layer_ids = Friendship.accepted.where(sender_id: ids).or(Friendship.accepted.where(reciver_id: ids)).pluck(:sender_id, :reciver_id).flatten
+    (second_layer_ids - [ id ] - ids).uniq
   end
+
 
   def my_feed
     Post.where(user_id:  accepted_friends_ids << id).includes(:user).order(created_at: :desc)
+  end
+
+  def canishow(viewer)
+    return true if id == viewer.id
+    return true if public_state?
+    return true if private_state? && viewer.accepted_friends_ids.include?(id)
+    return true if protected_state? && (viewer.accepted_friends_ids.include?(id) || viewer.one_layer_friends_ids.include?(id))
+    false
   end
 
   def name

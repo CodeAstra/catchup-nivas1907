@@ -1,0 +1,5 @@
+<%= turbo_stream.replace "cancel_#{params[:reciver_id]}" do%>
+  <%= turbo_frame_tag "fbutton_#{params[:reciver_id]}" do %>
+    <%= button_to "Add Friend", friendships_path(fid: params[:reciver_id]), method: :post %>
+  <% end %>
+<% end %>

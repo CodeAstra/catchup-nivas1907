@@ -1,7 +1,9 @@
 <%= turbo_frame_tag "friendbutton_#{user.id}" do %>
   <% if friendship = current_user.sent_friendships.pending.find_by(reciver_id: user.id) || current_user.sent_friendships.rejected.find_by(reciver_id: user.id) %>
-    <%= button_to "Pending" %>
-    <%= button_to "cancel request" %>
+    <%= turbo_frame_tag "cancel_#{user.id}" do %>
+      <%= button_to "Pending" %>
+      <%= button_to "cancel request", cancel_request_friendships_path(id: friendship.id, reciver_id: user.id), method: :delete %>
+    <% end %>
   <% elsif friendship = current_user.received_friendships.pending.find_by(sender_id: user.id) %>
     <%= button_to "accept", friendship_path(friendship.id, status: Friendship.friendship_statuses[:accepted]), method: :patch %>
     <%= button_to "reject", friendship_path(friendship.id, status: Friendship.friendship_statuses[:rejected]), method: :patch %>

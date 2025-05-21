@@ -12,31 +12,16 @@ class PostsController < ApplicationController
 
   def create
     @post = current_user.posts.create(post_params)
-
-    respond_to do |format|
-      format.html { redirect_to posts_path }
-      format.turbo_stream
-    end
   end
 
   def edit; end
 
   def update
     @update_success = @post.update(post_params)
-
-    respond_to do |format|
-      format.html { redirect_to posts_path }
-      format.turbo_stream
-    end
   end
 
   def destroy
     @destroy_success = @post.destroy
-
-    respond_to do |format|
-      format.html { redirect_to posts_path }
-      format.turbo_stream
-    end
   end
 
   def cancel
@@ -56,6 +41,10 @@ class PostsController < ApplicationController
         score: post.post_trending_score }
     end
     @trending_score_hsh = @trending_score_hsh.sort_by { |k, v| -v[:score] }
+  end
+
+  def onelayer
+    @posts = Post.where(user_id:  current_user.one_layer_friends_ids).includes(:user).order(created_at: :desc)
   end
 
 private

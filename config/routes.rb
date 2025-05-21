@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     collection do
       get :trending
       get :cancel
+      get :onelayer
     end
     resources :likes, only: [ :destroy, :create ]
   end
@@ -21,7 +22,7 @@ Rails.application.routes.draw do
     collection do
       get :pending_requests
       get :rejected_requests
-      get :cancel_request
+      delete :cancel_request
       get :search
     end
   end

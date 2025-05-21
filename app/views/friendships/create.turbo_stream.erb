@@ -1,5 +1,8 @@
+<% friendship = current_user.sent_friendships.pending.find_by(reciver_id: params[:fid]) %>
+
 <%= turbo_stream.replace "fbutton_#{params[:fid]}" do %>
-  <%= button_to "Pending" %> 
+  <%= button_to "Pending" %>
+  <%= button_to "Cancel Request", cancel_request_friendships_path(id: friendship.id), method: :delete %>
 <% end %>
 
 <%= render_turbo_stream_flash_message %>

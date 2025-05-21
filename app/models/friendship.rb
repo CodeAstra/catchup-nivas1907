@@ -4,7 +4,13 @@ class Friendship < ApplicationRecord
 
   enum :friendship_status, { pending: 0, accepted: 1, rejected: 2 }
 
-  def update_status(status)
-    update(friendship_status: status)
+  validate :sender_and_receiver_cannot_be_same
+
+  private
+
+  def sender_and_receiver_cannot_be_same
+    if sender_id == reciver_id
+      errors.add("reciver can't be the same as sender")
+    end
   end
 end

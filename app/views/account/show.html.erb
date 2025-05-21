@@ -14,7 +14,7 @@
 <% end %>
 <p>Post count: <%= @posts.count %> </p>
 <p>Friends count: <%= @friends_count %> </p>
-<%if canishow(@user.id) %>
+<% if @user.canishow(current_user) %>
   <h1>Your's Post's</h1>
   <% @posts.each do |post| %>
     <p>Title:<%= post.title %></p>

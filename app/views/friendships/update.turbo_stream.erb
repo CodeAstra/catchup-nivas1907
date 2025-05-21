@@ -4,7 +4,7 @@
       <%= button_to "Pending" %>
     <% end %> 
   <% else %>
-    <%= turbo_stream.remove @turbo_reference_key %>
+    <%= turbo_stream.remove turbo_reference_key(@friendship, request.referer) %>
     <% flash[:notice] = "Friend request #{Friendship.friendship_statuses.keys[params[:status].to_i] }" %>
   <% end %>
 <%else %>
