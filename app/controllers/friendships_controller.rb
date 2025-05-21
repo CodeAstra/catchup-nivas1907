@@ -8,7 +8,7 @@ class FriendshipsController < ApplicationController
   def new; end
 
   def create
-    @friendship = current_user.sent.create(reciver_id: params[:fid])
+    @friendship = current_user.sent_friendships.create(reciver_id: params[:fid])
 
     respond_to do |format|
       format.html { redirect_to new_friend_path }
@@ -17,8 +17,8 @@ class FriendshipsController < ApplicationController
   end
 
   def update
-    @friendship = current_user.sent.find_by(id: params[:id])  || current_user.received.find_by(id: params[:id])
-    @update_success = @friendship&.update_status(params[:status].to_i)
+    @friendship = current_user.sent_friendships.find_by(id: params[:id])  || current_user.received_friendships.find_by(id: params[:id])
+    @update_success = @friendship&.update(friendship_status: params[:status].to_i)
     @turbo_reference_key = case request.referer.split("/").last
     when "new"
       "friends_#{@friendship.sender_id}"
@@ -37,6 +37,15 @@ class FriendshipsController < ApplicationController
     @pending_requests = User.where(id: current_user.pending_friends_ids)
   end
 
+  def rejected_requests
+    @rejected_requests = User.where(id: current_user.rejected_friends_ids)
+  end
+
+  def cancel_request
+    @friendship = Friendship.find(params[:id])
+    @friendship.destroy
+  end
+
   def search
     @input = params[:search].strip
     if params[:type] == "friends"
@@ -44,7 +53,7 @@ class FriendshipsController < ApplicationController
 
       render "index"
     else
-      @add_friends_list =  @add_friends_list.where("users.username LIKE ? OR email LIKE ?", "%#{@input}%", "%#{@input}%")
+      @add_friends_list = @add_friends_list.where("users.username LIKE ? OR email LIKE ?", "%#{@input}%", "%#{@input}%")
 
       render "new"
     end

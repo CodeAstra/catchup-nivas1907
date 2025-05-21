@@ -49,7 +49,7 @@ class PostsController < ApplicationController
 
   def trending
     @posts = current_user.my_feed
-    @trending_score_hsh={}
+    @trending_score_hsh = {}
     @posts.each do |post|
       @trending_score_hsh[post.id] = {
         post: post,
@@ -65,6 +65,6 @@ private
   end
 
   def find_post
-    @post=current_user.posts.find(params[:id])
+    @post = current_user.posts.find(params[:id])
   end
 end

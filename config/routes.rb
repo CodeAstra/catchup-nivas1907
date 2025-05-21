@@ -20,6 +20,8 @@ Rails.application.routes.draw do
   resources :friendships, only: [ :index, :new, :create, :update ] do
     collection do
       get :pending_requests
+      get :rejected_requests
+      get :cancel_request
       get :search
     end
   end

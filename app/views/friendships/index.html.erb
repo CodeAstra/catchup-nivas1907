@@ -1,5 +1,6 @@
 <%= button_to "Add Friends", new_friendship_path, method: :get %>
 <%= button_to "Pending Requests(#{current_user.pending_friends_ids.count})", pending_requests_friendships_path, method: :get %>
+<%= button_to "Rejected List", rejected_requests_friendships_path, method: :get %>
 <%= render partial: "search", locals: { search_type: "friends" } %>
 <% @friends_list.each do |user| %>
   <%= image_tag url_for(user.avatar), class: "avatar" if user.avatar.attached? %>

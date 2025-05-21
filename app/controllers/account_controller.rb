@@ -15,16 +15,16 @@ class AccountController < ApplicationController
     respond_to do |format|
       if @update_success
         format.html { redirect_to account_path(current_user) }
-        format.turbo_stream { flash[:notice] =  "Account details are successfully updated." }
+        format.turbo_stream { flash[:notice] = "Account details are successfully updated." }
       else
         format.html { redirect_to edit_account_path }
-        format.turbo_stream { flash[:notice] =  "You are not authorized to update" }
+        format.turbo_stream { flash[:notice] = "You are not authorized to update" }
       end
     end
   end
 
   def privacy
-    @privacy_success = current_user.privacy_update(params[:user][:privacy_status].to_i)
+    @privacy_success = current_userupdate(privacy_status: params[:user][:privacy_status].to_i)
 
     respond_to do |format|
       format.html { redirect_to account_path(current_user)  }
