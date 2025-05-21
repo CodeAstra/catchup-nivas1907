@@ -24,7 +24,6 @@ class FriendshipsController < ApplicationController
   def update
     @friendship = current_user.sent_friendships.find_by(id: params[:id])  || current_user.received_friendships.find_by(id: params[:id])
     @update_success = @friendship&.update(friendship_status: params[:status].to_i)
-
      if @update_success && @friendship.accepted?
       sender = @friendship.sender
       receiver = @friendship.reciver

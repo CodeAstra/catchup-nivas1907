@@ -7,6 +7,8 @@ module FriendshipsHelper
       "friends_#{friendship.sender_id}"
     when "pending_requests"
       "pendingpage_#{friendship.sender_id}"
+    when "rejected_requests"
+      "rejectedpage_#{friendship.sender_id}"
     else
       "accountpage_#{friendship.sender_id}"
     end
