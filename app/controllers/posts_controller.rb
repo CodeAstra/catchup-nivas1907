@@ -47,6 +47,13 @@ class PostsController < ApplicationController
     @posts = Post.where(user_id:  current_user.one_layer_friends_ids).includes(:user).order(created_at: :desc)
   end
 
+  def daily_digest
+    posts = current_user.my_feed.where(created_at: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day)
+    users_count = posts.select(:user_id).distinct.count
+    posts_count = posts.count
+    UserMailer.with(user: current_user, users_count: users_count, posts_count: posts_count).daily_digest.deliver_later
+  end
+
 private
 
   def post_params

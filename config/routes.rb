@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       get :trending
       get :cancel
       get :onelayer
+      post :daily_digest
     end
     resources :likes, only: [ :destroy, :create ]
   end
