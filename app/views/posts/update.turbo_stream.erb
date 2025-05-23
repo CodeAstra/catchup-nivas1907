@@ -2,7 +2,6 @@
   <%= turbo_stream.replace "post_#{@post.id}" do %>
     <%= render @post %>
   <% end %>
-  <% flash[:notice] = "Post successfully updated" %>
 <%else %>
   <% flash[:notice] = "Your are not authorized" %>
 <% end %>

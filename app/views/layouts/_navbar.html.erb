@@ -6,8 +6,8 @@
         <li><%= button_to "Log out", destroy_user_session_path, method: :delete %></li>
         <li><%= button_to "Get Daily Digest", daily_digest_posts_path, method: :post %></li>
         <li><%= link_to "Account", account_path(current_user.id) %></li>
-        <li><%= link_to "post", posts_path %></li>
-        <li><%= link_to "friends", friendships_path %></li>
+        <li><%= link_to "Posts", posts_path %></li>
+        <li><%= link_to "Friends", friendships_path %></li>
         <li><%= link_to "Trending Posts", trending_posts_path %></li>
         <li><%= link_to "Posts of Your friends friends", onelayer_posts_path %></li>
       <%else %>

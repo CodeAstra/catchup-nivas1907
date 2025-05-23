@@ -14,11 +14,6 @@ class FriendshipsController < ApplicationController
     if @friendship.persisted? && receiver.present?
       FriendRequestMailer.with(user: current_user, friend: receiver).new_request.deliver_later
     end
-
-    respond_to do |format|
-      format.html { redirect_to new_friend_path }
-      format.turbo_stream { flash[:notice] = "Friend request sent." }
-    end
   end
 
   def update
@@ -29,11 +24,6 @@ class FriendshipsController < ApplicationController
       receiver = @friendship.reciver
       FriendRequestMailer.with(user: sender, friend: receiver).request_accepted.deliver_later
      end
-
-    respond_to do |format|
-      format.html { redirect_to friends_path }
-      format.turbo_stream
-    end
   end
 
   def pending_requests

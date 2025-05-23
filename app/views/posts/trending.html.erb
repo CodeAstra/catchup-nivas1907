@@ -1,11 +1,6 @@
 <h1>Trending's page </h1>
 <% @trending_score_hsh.each do |key,value| %>
   <p>Trending Value: <%= value[:score] %> </p>
-  <% post = value[:post] %>
-  <%= link_to post.user.name, account_path(post.user), method: :get %>
-  <%= image_tag url_for(post.user.avatar), class: "avatar" if post.user.avatar.attached? %>
-  <p style="block:flex;" >Title:<%= post.title %></p>
-  <%= time_ago_in_words(post.created_at) %>
-  <p>description:<%= post.description %></p>
-  <%= render partial: "likes/like", locals: {post: post} %>
+  <% @post = value[:post] %>
+  <%= render @post %>
 <% end %>

@@ -1,13 +1,17 @@
 <%= turbo_frame_tag "post_#{post.id}" do %>
-  <%= link_to  post.user.name, account_path(post.user), method: :get, data: { turbo_frame: "_top" } %>
-  <%= image_tag url_for(post.user.avatar), class: "avatar" if post.user.avatar.attached? %>
-  <p>Title:<%= post.title %></p>
-  <%= time_ago_in_words(post.created_at) %>
-  <p>description:<%= post.description %></p>
-  <%= render partial: "likes/like", locals: {post: post} %>
-  <% if post.user_id == current_user.id %>    
-    <%= button_to "edit", edit_post_path(post), method: :get %>
-    <%= button_to "delete", post_path(post), method: :delete %>
-  <% end %>
-  <br>
+  <div id="<%= dom_id(post) %>" class="post <%= 'highlight' if local_assigns[:highlight] %>">
+    <%= link_to  post.user.name, account_path(post.user), method: :get, data: { turbo_frame: "_top" } %>
+    <%= image_tag url_for(post.user.avatar), class: "avatar" if post.user.avatar.attached? %>
+    <p>Title:<%= post.title %></p>
+    <p> <%= time_ago_in_words(post.created_at) %> </p>
+    <p>description:<%= post.description %></p>
+    <div class="post-actions">
+      <%= render partial: "likes/like", locals: {post: post} %>
+      <% if post.user_id == current_user.id %>    
+        <%= button_to "edit", edit_post_path(post), method: :get %>
+        <%= button_to "delete", post_path(post), method: :delete %>
+      <% end %>
+    </div>
+    <br>
+  </div>
 <% end %>

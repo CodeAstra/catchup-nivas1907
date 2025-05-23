@@ -38,7 +38,7 @@ class PostsController < ApplicationController
     @posts.each do |post|
       @trending_score_hsh[post.id] = {
         post: post,
-        score: post.post_trending_score }
+        score: (post.likes_count * 3600 * 1000) / (Time.now - post.created_at).to_i }
     end
     @trending_score_hsh = @trending_score_hsh.sort_by { |k, v| -v[:score] }
   end
