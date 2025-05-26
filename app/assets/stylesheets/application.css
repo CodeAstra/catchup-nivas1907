@@ -34,6 +34,7 @@ html, body {
   display: flex;
   gap: 10px;
   margin-top: 10px;
+  margin-left: 610px;
   flex-wrap: wrap;
 }
 
@@ -46,6 +47,7 @@ a,.post a {
   font-weight: bold;
   font-size: 25px; 
   text-decoration: none;
+  display: block;
 }
 a:hover,.post a:hover {
   color: #1b7f8c !important; /* Brighter hover */
@@ -78,4 +80,8 @@ nav li form {
 
 nav a {
   text-decoration: none; /* removes underline */
+}
+button,button:hover{
+  background-color: Transparent;
+  border-color: transparent;
 }

@@ -2,16 +2,18 @@
   <div id="<%= dom_id(post) %>" class="post <%= 'highlight' if local_assigns[:highlight] %>">
     <%= link_to  post.user.name, account_path(post.user), method: :get, data: { turbo_frame: "_top" } %>
     <%= image_tag url_for(post.user.avatar), class: "avatar" if post.user.avatar.attached? %>
-    <p>Title:<%= post.title %></p>
-    <p> <%= time_ago_in_words(post.created_at) %> </p>
-    <p>description:<%= post.description %></p>
+    <% if local_assigns[:trending_score] %>
+      <p>Trending Score: <%= trending_score %></p>
+    <% end %>
     <div class="post-actions">
-      <%= render partial: "likes/like", locals: {post: post} %>
       <% if post.user_id == current_user.id %>    
-        <%= button_to "edit", edit_post_path(post), method: :get %>
-        <%= button_to "delete", post_path(post), method: :delete %>
+          <%= button_to "✏️", edit_post_path(post), method: :get %>
+          <%= button_to "🗑️", post_path(post), method: :delete %>
       <% end %>
-    </div>
-    <br>
+     </div>
+    <p style="display: inline; margin-right: 550px">Title:<%= post.title %></p>
+    <p style="display: inline"> <%= time_ago_in_words(post.created_at) %> </p>
+    <p>description:<%= post.description %></p>
+    <%= render partial: "likes/like", locals: {post: post} %>
   </div>
 <% end %>

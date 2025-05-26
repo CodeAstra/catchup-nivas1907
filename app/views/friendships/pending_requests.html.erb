@@ -1,3 +1,6 @@
+<% if @pending_requests.count==0 %>
+  <p>No Pending Requests </p>
+<%end%>
 <% @pending_requests.each do |user| %>
   <%= turbo_frame_tag "pendingpage_#{user.id}" do %>
     <%= image_tag url_for(user.avatar), class: "avatar" if user.avatar.attached? %>
