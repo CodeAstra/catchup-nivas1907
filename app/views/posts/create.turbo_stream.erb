@@ -1,6 +1,10 @@
 <% if @post.persisted? %>
   <%= turbo_stream.prepend "post", partial: "posts/post", locals: { post: @post, highlight: true } %>
-  <%= turbo_stream.remove Post.new %>
+  <%= turbo_stream.replace Post.new do %>
+    <%= turbo_frame_tag Post.new do %>
+      <%= button_to "Add a post", new_post_path, data: { turbo_frame: dom_id(Post.new) }, method: :get %>
+    <% end %> 
+  <% end %>
 <% else %>
   <%= turbo_stream.replace Post.new, partial: "posts/form", locals: { post: @post } %>
 <% end %>

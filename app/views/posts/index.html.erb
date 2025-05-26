@@ -1,5 +1,6 @@
-<%= button_to "Add a post", new_post_path, data: { turbo_frame: dom_id(Post.new) }, method: :get, form: {style: 'background-color: none'} %>
-<%= turbo_frame_tag Post.new %>  
+<%= turbo_frame_tag Post.new do %>
+  <%= button_to "Add a post", new_post_path, data: { turbo_frame: dom_id(Post.new) }, method: :get %>
+<% end %>  
 <%= turbo_frame_tag "post" do %>  
   <%= render @posts %>
 <% end %>
