@@ -1,5 +1,0 @@
-<h1>Trending's page </h1>
-<% @trending_score_hsh.each do |key,value| %>
-  <% @post = value[:post] %>
-  <%= render partial: "posts/post", locals: { post: @post, trending_score: value[:score] } %>
-<% end %>

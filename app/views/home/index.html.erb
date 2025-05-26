@@ -1,4 +1,9 @@
-<h1>Homepage</h1>
 <% if current_user %>
-  <h1>hi <%= current_user.name %> </h1>
+  <h1>Trending's page </h1>
+  <% @trending_score_hsh.each do |key,value| %>
+    <% @post = value[:post] %>
+    <%= render partial: "posts/post", locals: { post: @post, trending_score: value[:score] } %>
+  <% end %>
+<% else %>
+  <h1>Homepage</h1>
 <% end %>

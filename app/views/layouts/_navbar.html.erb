@@ -3,18 +3,20 @@
     <ul>
       <li><%= link_to "Home", "/" %></li>
       <%if current_user %>
-        <li><%= link_to "Account", account_path(current_user.id) %></li>
-        <li><%= link_to "Friends", friendships_path %></li>
         <li><%= link_to "Posts", posts_path %></li>
-        <li><%= link_to "Trending Posts", trending_posts_path %></li>
-        <li><%= link_to "Posts of Your friends friends", onelayer_posts_path %></li>
-        <li><%= button_to "Get Daily Digest", daily_digest_posts_path, method: :post %></li>
-        <li><%= button_to "Log out", destroy_user_session_path, method: :delete %></li>
+        <div class="dropdown">
+          <%= image_tag url_for(current_user.avatar), class: "avatar" if current_user.avatar.attached? %>
+          <div class="dropdown-menu" id="dropdownMenu">
+            <%= link_to "Account", account_path(current_user.id), class: "dropdown-item" %>
+            <%= link_to "My Posts",my_posts_posts_path %>
+            <%= link_to "Friends", friendships_path, class: "dropdown-item" %>
+            <%= button_to "Log out", destroy_user_session_path, method: :delete %>
+          </div>
+        </div>
       <%else %>
         <li><%= link_to "Sign Up", new_user_registration_path %></li>
         <li><%= link_to "Login", new_user_session_path %></li>
       <% end %>
     </ul>
   </nav>
-</div>
- 
+</div> 

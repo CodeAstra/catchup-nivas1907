@@ -32,16 +32,7 @@ class PostsController < ApplicationController
   end
 
 
-  def trending
-    @posts = current_user.my_feed
-    @trending_score_hsh = {}
-    @posts.each do |post|
-      @trending_score_hsh[post.id] = {
-        post: post,
-        score: (post.likes_count * 3600 * 1000) / (Time.now - post.created_at).to_i }
-    end
-    @trending_score_hsh = @trending_score_hsh.sort_by { |k, v| -v[:score] }
-  end
+  
 
   def onelayer
     @posts = Post.where(user_id:  current_user.one_layer_friends_ids).includes(:user).order(created_at: :desc)
