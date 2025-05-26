@@ -12,6 +12,8 @@ class User < ApplicationRecord
 
   enum :privacy_status, { public_state: 0, private_state: 1, protected_state: 2 }
 
+  after_create :attach_default_avatar
+
   def accepted_friends_ids
     sent = Friendship.where(sender: self).accepted.pluck(:reciver_id)
     received = Friendship.where(reciver: self).accepted.pluck(:sender_id)
@@ -47,5 +49,18 @@ class User < ApplicationRecord
 
   def name
     username || email.split("@").first
+  end
+
+  private
+
+  def attach_default_avatar
+    return if avatar.attached?
+
+    default_image_path = Rails.root.join("app/assets/images/default-avatar.png")
+    avatar.attach(
+      io: File.open(default_image_path),
+      filename: "default-avatar.png",
+      content_type: "image/png"
+    )
   end
 end
