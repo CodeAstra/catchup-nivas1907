@@ -2,18 +2,7 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 
-
-document.addEventListener("DOMContentLoaded", () => {
-  document.addEventListener("click", function (e) {
-    if (e.target && e.target.classList.contains("cancel-button")) {
-      const formContainer = e.target.closest("turbo-frame");
-      if (formContainer) {
-        formContainer.remove(); 
-      }
-    }
-  });
-});
-
+//Creating new post
 window.handleCreateSubmit = async function(event) {
   event.preventDefault();
   const form = event.target;
@@ -40,7 +29,7 @@ window.handleCreateSubmit = async function(event) {
     console.error("Error:", err);
   }
 };
-
+//Update Post
 window.handleEditSubmit = async function(event, postId) {
   event.preventDefault();
   const form = event.target;
@@ -60,6 +49,32 @@ window.handleEditSubmit = async function(event, postId) {
       document.querySelector(`turbo-frame[id="post_${postId}"]`).outerHTML = html;
     } else {
       console.error("Failed to update post");
+    }
+  } catch (err) {
+    console.error("Error:", err);
+  }
+};
+//Delete Post
+window.handleDeletePost = async function(event) {
+  event.preventDefault();
+  const button = event.currentTarget;
+  const postId = button.dataset.postId;
+
+  if (!confirm("Are you sure you want to delete this post?")) return;
+
+  try {
+    const response = await fetch(`/posts/${postId}`, {
+      method: "DELETE",
+      headers: {
+        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content,
+      },
+    });
+
+    if (response.ok) {
+      const postElement = document.querySelector(`#post-${postId}`);
+      if (postElement) postElement.remove();
+    } else {
+      console.error("Failed to delete post");
     }
   } catch (err) {
     console.error("Error:", err);
