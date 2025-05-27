@@ -20,13 +20,24 @@ class PostsController < ApplicationController
 
   def create
     @post = current_user.posts.create(post_params)
+
+    if @post.save
+      render partial: "post", locals: { post: @post }
+    else
+      render partial: "form", status: :unprocessable_entity, locals: { post: @post, form_path: posts_path, form_method: :post }
+    end
   end
 
   def edit; end
 
-  def update
-    @update_success = @post.update(post_params)
-  end
+ def update
+   if @post.update(post_params)
+     render partial: "post", locals: { post: @post }
+   else
+     render partial: "form", status: :unprocessable_entity, locals: { post: @post, form_path: post_path(@post), form_method: :patch }
+   end
+ end
+
 
   def destroy
     @destroy_success = @post.destroy

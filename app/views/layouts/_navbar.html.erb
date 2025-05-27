@@ -15,7 +15,7 @@
           <%= link_to "Account", account_path(current_user.id), class: "dropdown-item" %>
           <%= link_to "My Posts", my_posts_posts_path, class: "dropdown-item" %>
           <%= link_to "Friends", friendships_path, class: "dropdown-item" %>
-          <%= button_to "Log out", destroy_user_session_path, method: :delete, class: "dropdown-item" %>
+          <%= link_to "Log out", destroy_user_session_path, class: "dropdown-item" %>
         </div>
         </li>
       <% else %>

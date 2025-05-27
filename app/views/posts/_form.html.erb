@@ -1,9 +1,14 @@
-<%= form_with model: post, url: form_path, method: form_method do |f| %>
-  <%= f.label :title, placeholder: "title", :class => "form_control" %>
+<% is_edit = post.persisted? %>
+<%= form_with model: post, url: form_path, method: form_method,
+              html: {
+                id: is_edit ? "edit-post-form-#{post.id}" : "new-post-form",
+                onsubmit: is_edit ? "handleEditSubmit(event, #{post.id})" : "handleCreateSubmit(event)"
+              } do |f| %>
+  <%= f.label :title, placeholder: "title", class: "form_control" %>
   <%= f.text_field :title %>
-  <%= f.label "description", placeholder: "description", :class => "form_box" %>
+
+  <%= f.label :description, placeholder: "description", class: "form_box" %>
   <%= f.text_field :description %>
-  <%= f.submit %>
+
+  <%= f.submit is_edit ? "Update Post" : "Create Post" %>
 <% end %>
-<%# <%= button_tag "Cancel", type: "button", class: "cancel-button" %>
-<%= button_to "cancel", cancel_posts_path, method: :get %>
