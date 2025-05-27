@@ -10,7 +10,7 @@ class User < ApplicationRecord
   has_many :sent_friendships, class_name: "Friendship", foreign_key: :sender_id
   has_many :received_friendships, class_name: "Friendship", foreign_key: :reciver_id
 
-  enum :privacy_status, { public_state: 0, private_state: 1, protected_state: 2 }
+  enum :privacy_status, { everyone: 0, friends_only: 1, friends_of_friends: 2 }
 
   after_create :attach_default_avatar
 
@@ -41,9 +41,9 @@ class User < ApplicationRecord
 
   def canishow(viewer)
     return true if id == viewer.id
-    return true if public_state?
-    return true if private_state? && viewer.accepted_friends_ids.include?(id)
-    return true if protected_state? && (viewer.accepted_friends_ids.include?(id) || viewer.one_layer_friends_ids.include?(id))
+    return true if everyone?
+    return true if friends_only? && viewer.accepted_friends_ids.include?(id)
+    return true if friends_of_friends? && (viewer.accepted_friends_ids.include?(id) || viewer.one_layer_friends_ids.include?(id))
     false
   end
 

@@ -1,6 +1,13 @@
-<%= turbo_frame_tag Post.new do %>
-  <%= button_to "Add a post", new_post_path, data: { turbo_frame: dom_id(Post.new) }, method: :get %>
-<% end %>  
+<%= form_with url: posts_path, method: :get, local: true do |form| %>
+  <%= form.label :filter, "Show posts from:" %>
+  <%= form.select :filter, options_for_select([["Friends", "friends"], ["Friends of Friends", "friends_of_friends"]], params[:filter]), {}, { onchange: "this.form.submit();" } %>
+<% end %>
+<div x-data="{ open: false }" >
+  <button type="button" @click="open = true" class="btn">Add a post</button>
+  <div  x-show="open" >
+    <%= render partial: "form", locals: { post: Post.new, form_path: posts_path, form_method: :post} %>
+  </div>    
+</div> 
 <%= turbo_frame_tag "post" do %>  
   <%= render @posts %>
 <% end %>
