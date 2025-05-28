@@ -12,6 +12,10 @@ class PostsController < ApplicationController
       current_user.my_feed
       end
       @pagy, @posts = pagy(@posts, items: 10)
+      respond_to do |format|
+        format.html
+        format.turbo_stream
+      end
   end
 
   def new

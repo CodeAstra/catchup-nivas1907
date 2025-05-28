@@ -12,5 +12,11 @@
 <div id="posts-list">
   <%= render @posts %>
 </div>
-<%== pagy_nav(@pagy) if @pagy.present? %>
+
+<%= turbo_frame_tag "posts", src: posts_path(format: :turbo_stream), loading: :lazy %>
+
+<% if @pagy.next %>
+  <%= turbo_frame_tag "load_more", src: posts_path(page: @pagy.next, format: :turbo_stream), loading: :lazy %>
+<% end %>
+
 
