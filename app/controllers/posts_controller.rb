@@ -3,15 +3,15 @@ class PostsController < ApplicationController
   before_action :find_post, only: [ :edit, :update, :destroy ]
 
   def index
-    @posts =
-      case params[:filter]
+      @posts = case params[:filter]
       when "friends"
-        current_user.my_feed
+      current_user.my_feed
       when "friends_of_friends"
-        Post.where(user_id: current_user.one_layer_friends_ids).includes(:user).order(created_at: :desc)
+      Post.where(user_id: current_user.one_layer_friends_ids).includes(:user).order(created_at: :desc)
       else
-        current_user.my_feed
+      current_user.my_feed
       end
+      @pagy, @posts = pagy(@posts, items: 10)
   end
 
   def new

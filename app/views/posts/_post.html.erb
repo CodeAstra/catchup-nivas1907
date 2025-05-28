@@ -14,7 +14,7 @@
     <% end %>
   </div>
 
-  <p style="display: inline; margin-right: 550px">Title: <%= post.title %></p>
+  <p style="display: inline; margin-right: 450px">Title: <%= post.title %></p>
   <p style="display: inline"><%= time_ago_in_words(post.created_at) %></p>
   <p>Description: <%= post.description %></p>
   <%= render partial: "likes/like", locals: { post: post } %>
