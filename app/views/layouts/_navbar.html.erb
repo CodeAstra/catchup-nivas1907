@@ -15,6 +15,7 @@
           <%= link_to "Account", account_path(current_user.id), class: "dropdown-item" %>
           <%= link_to "My Posts", my_posts_posts_path, class: "dropdown-item" %>
           <%= link_to "Friends", friendships_path, class: "dropdown-item" %>
+          <%= button_to "daily digest", daily_digest_posts_path, method: :post %>
           <%= button_to "Log out", destroy_user_session_path,method: :delete,  class: "dropdown-item" %>
         </div>
         </li>
