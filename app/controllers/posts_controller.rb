@@ -11,10 +11,10 @@ class PostsController < ApplicationController
       else
       current_user.my_feed
       end
-      @pagy, @posts = pagy(@posts, items: 10)
+      @pagy, @posts = pagy_countless(@posts, items: 10)
       respond_to do |format|
         format.html
-        format.turbo_stream
+        format.turbo_stream 
       end
   end
 

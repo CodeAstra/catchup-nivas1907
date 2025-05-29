@@ -1,11 +1,11 @@
-<%= turbo_stream.append "posts" do %>
+<%= turbo_stream.append "posts-list" do %>
   <%= render @posts %>
 <% end %>
 
-<% if @pagy.next %>
-  <%= turbo_stream.replace "load_more" do %>
-    <%= turbo_frame_tag "load_more", src: posts_path(page: @pagy.next, format: :turbo_stream), loading: :lazy %>
+<% if @pagy.next.present? %>
+  <%= turbo_stream.replace "next_page" do %>
+    <%= turbo_frame_tag "next_page", src: posts_path(page: @pagy.next, format: :turbo_stream), loading: :lazy do %>
+      <div style="text-align: center; padding: 1em; font-weight: bold; color: black;">Loading more posts...</div>
+    <% end %>
   <% end %>
-<% else %>
-  <%= turbo_stream.remove "load_more" %>
 <% end %>

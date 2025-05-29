@@ -188,3 +188,9 @@ button:focus-visible {
   align-items: center;
   gap: .5rem;
 }
+
+.post-header{
+  display: flex;
+  flex-wrap: wrap
+}
+
