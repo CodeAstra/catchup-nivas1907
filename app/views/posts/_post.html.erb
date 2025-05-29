@@ -1,8 +1,10 @@
 <%= turbo_frame_tag "post_#{post.id}" do%>
 <div id="post-<%= post.id %>" class="post <%= 'highlight' if local_assigns[:highlight] %>">
-  <%= link_to post.user.name, account_path(post.user), method: :get, data: { turbo_frame: "_top" } %>
-  <%= image_tag url_for(post.user.avatar), class: "avatar" if post.user.avatar.attached? %>
-
+  <div class="user-info">
+    <%= image_tag url_for(post.user.avatar), class: "avatar" if post.user.avatar.attached? %>
+    <%= link_to post.user.name, account_path(post.user), method: :get, data: { turbo_frame: "_top" } %>
+  </div>
+  
   <% if local_assigns[:trending_score] %>
     <p>Trending Score: <%= trending_score %></p>
   <% end %>

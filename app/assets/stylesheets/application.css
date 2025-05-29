@@ -182,3 +182,9 @@ button:focus-visible {
   color: #f5f5dcdf;
   font-weight: bold;
 }
+
+.user-info{
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
