@@ -80,3 +80,31 @@ window.handleDeletePost = async function(event) {
     console.error("Error:", err);
   }
 };
+
+
+//like create
+window.handleLike = async function(event) {
+  event.preventDefault();
+  const form = event.target;
+  const formData = new FormData(form);  
+  try {
+    const response = await fetch(form.action, {
+      method: form.method.toUpperCase(),
+      headers: {
+        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content,
+      },
+      body: formData,
+    });
+
+    if (response.ok) {
+      const html = await response.text();
+      document.querySelector('#posts-list').insertAdjacentHTML('afterbegin', html);
+      form.reset();
+      window.dispatchEvent(new CustomEvent("post-created"));
+    } else {
+      console.error("Failed to create post");
+    }
+  } catch (err) {
+    console.error("Error:", err);
+  }
+}

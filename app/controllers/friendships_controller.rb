@@ -12,7 +12,7 @@ class FriendshipsController < ApplicationController
     receiver = User.find_by(id: params[:fid])
 
     if @friendship.persisted? && receiver.present?
-      FriendRequestMailer.with(user: current_user, friend: receiver).new_request.deliver_later
+      FriendRequestMailer.with(user: current_user, friend: receiver).new_request.deliver_now
     end
   end
 
@@ -22,7 +22,7 @@ class FriendshipsController < ApplicationController
      if @update_success && @friendship.accepted?
       sender = @friendship.sender
       receiver = @friendship.reciver
-      FriendRequestMailer.with(user: sender, friend: receiver).request_accepted.deliver_later
+      FriendRequestMailer.with(user: sender, friend: receiver).request_accepted.deliver_now
      end
   end
 
