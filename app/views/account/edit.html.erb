@@ -4,7 +4,9 @@
     <%= f.text_field :username %>
     <%= f.label "bio", placeholder: "bio", :class => "form_box" %>
     <%= f.text_field :bio %>
-    <%= f.file_field :avatar %>
+    <%= f.file_field :avatar %> <br>
+    <%= f.check_box :daily_digest %>
+    <%= f.label :daily_digest, "Send me the daily digest email" %> <br>
     <%= f.submit %>    
   <% end %>
   <%= button_to "cancel", cancel_account_index_path, method: :get %>

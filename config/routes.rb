@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
-  mount MissionControl::Jobs::Engine, at: "/jobs"
-  
   devise_for :users, controllers: { sessions: "users/sessions", registrations: "users/registrations" }
 
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
 
   resources :account, only: [ :show, :edit, :update ] do
     collection do
