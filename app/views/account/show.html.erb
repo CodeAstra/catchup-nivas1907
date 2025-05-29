@@ -5,7 +5,7 @@
   <%= image_tag url_for(@user.avatar), class: "avatar" if @user.avatar.attached? %>
   <% if current_user.id ==  @user.id %>
     <%= button_to "edit", edit_account_path(current_user.id), method: :get %>
-    <%= render partial: "privacy" %>
+    
   <% else %>
     <%= turbo_frame_tag "accountpage_#{@user.id}" do%>
       <%= render partial: "friendships/friendship_action", locals: { user: @user } %>

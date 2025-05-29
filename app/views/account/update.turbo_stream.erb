@@ -6,7 +6,6 @@
       <p>Bio:<%= current_user.bio %></p>
       <%= image_tag url_for(current_user.avatar), class: "avatar" if current_user.avatar.attached? %>
       <%= button_to "edit", edit_account_path(current_user.id), method: :get %>
-      <%= render partial: "privacy" %>
     <% end %>
   <% end %>
 <% end %>

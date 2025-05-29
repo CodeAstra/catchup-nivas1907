@@ -1,6 +1,0 @@
-<%= turbo_frame_tag "account_privacy"  do %>
-  <%= form_with model: current_user, url:privacy_account_index_path, method: :patch do |f| %>
-    <%= f.select :privacy_status, options_for_select(User.privacy_statuses, :selected => current_user.privacy_status) %>
-    <%= f.submit %>
-  <% end %>
-<% end %>
