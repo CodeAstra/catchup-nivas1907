@@ -7,14 +7,14 @@ class PostsController < ApplicationController
       when "friends"
       current_user.my_feed
       when "friends_of_friends"
-      Post.where(user_id: current_user.one_layer_friends_ids).includes(:user).order(created_at: :desc)
+      Post.where(user_id: current_user.one_layer_friends_ids).includes(user: :avatar_attachment).order(created_at: :desc)
       else
       current_user.my_feed
       end
-      @pagy, @posts = pagy_countless(@posts, items: 10)
+      @pagy, @posts = pagy(@posts, items: 10)
       respond_to do |format|
         format.html
-        format.turbo_stream 
+        format.turbo_stream
       end
   end
 

@@ -27,11 +27,11 @@ class FriendshipsController < ApplicationController
   end
 
   def pending_requests
-    @pending_requests = User.where(id: current_user.pending_friends_ids)
+    @pending_requests = User.where(id: current_user.pending_friends_ids).includes(:avatar_attachment)
   end
 
   def rejected_requests
-    @rejected_requests = User.where(id: current_user.rejected_friends_ids)
+    @rejected_requests = User.where(id: current_user.rejected_friends_ids).includes(:avatar_attachment)
   end
 
   def cancel_request
@@ -56,10 +56,10 @@ class FriendshipsController < ApplicationController
 private
 
   def add_friends_list
-    @add_friends_list = User.where.not(id: current_user.accepted_friends_ids << current_user.id)
+    @add_friends_list = User.where.not(id: current_user.accepted_friends_ids << current_user.id).includes(:avatar_attachment)
   end
 
   def friends_list
-    @friends_list = User.where(id: current_user.accepted_friends_ids)
+    @friends_list = User.where(id: current_user.accepted_friends_ids).includes(:avatar_attachment)
   end
 end

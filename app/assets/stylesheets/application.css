@@ -26,7 +26,7 @@ html, body {
     padding: 16px;
     margin: 20px;
     width: 800px;                
-    background-color: #db700598;   
+    background-color: white;   
     border-radius: 8px;          
 }
 .post.highlight {
@@ -36,8 +36,6 @@ html, body {
 .post-actions {
   display: flex;
   gap: 10px;
-  margin-top: 10px;
-  margin-left: 610px;
   flex-wrap: wrap;
 }
 
@@ -108,7 +106,7 @@ nav li form {
   position: absolute;
   top: 40px; 
   right: 0;
-  background: white;
+  background: #f5f5dcdf;
   border: 1px solid #ccc;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 10px;
@@ -129,7 +127,7 @@ nav li form {
 }
 
 button {
-  background-color: #ffffff;
+  background-color: blueviolet;
   border: 0px solid rgb(209, 213, 219);
   border-radius: 0.5rem;
   color: #111827;
@@ -189,8 +187,14 @@ button:focus-visible {
   gap: .5rem;
 }
 
+.user-info img{
+  width: 55px;
+  height: 55px;
+}
+
 .post-header{
   display: flex;
-  flex-wrap: wrap
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 

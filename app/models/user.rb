@@ -36,7 +36,7 @@ class User < ApplicationRecord
 
 
   def my_feed
-    Post.where(user_id:  accepted_friends_ids << id).includes(:user).order(created_at: :desc)
+    Post.where(user_id:  accepted_friends_ids << id).includes(:likes, user: :avatar_attachment).order(created_at: :desc)
   end
 
   def canishow(viewer)

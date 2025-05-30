@@ -2,24 +2,33 @@
 <div id="post-<%= post.id %>" class="post <%= 'highlight' if local_assigns[:highlight] %>">
   <div class="post-header">
     <div class="user-info">
-      <%= image_tag url_for(post.user.avatar), class: "avatar" if post.user.avatar.attached? %>
+      <%= image_tag url_for(post.user.avatar), loading: "lazy", class: "avatar" if post.user.avatar.attached? %>
       <%= link_to post.user.name, account_path(post.user), method: :get, data: { turbo_frame: "_top" } %>
     </div>
 
-    <div class="post-actions">
-      <% if post.user_id == current_user.id %>    
-        <%= button_to "✏️", edit_post_path(post), method: :get %>
-        <button data-post-id="<%= post.id %>" onclick="handleDeletePost(event)">🗑️</button>
-      <% end %>
-    </div>  
+<div class="dropdown-wrapper"  x-data="{ showMenu: false }">
+  <% if post.user_id == current_user.id %>
+    <button x-show="!showMenu" @click="showMenu = true" style="background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;  ; color: black" >⋯</button>
+    <div  x-show="showMenu" class="dropdown " x-transition @click.outside="showMenu = false">
+      <%= button_to "✏️", edit_post_path(post), method: :get %>
+      <button data-post-id="<%= post.id %>" onclick="handleDeletePost(event)">🗑️</button>
+    </div>
+  <% end %>
+</div>
+  
   </div>
   <% if local_assigns[:trending_score] %>
     <p>Trending Score: <%= trending_score %></p>
   <% end %>
 
-  <p style="display: inline; margin-right: 450px">Title: <%= post.title %></p>
-  <p style="display: inline"><%= time_ago_in_words(post.created_at) %></p>
-  <p>Description: <%= post.description %></p>
+  <h3 style = "color: #0889bd; font-size: 2rem; margin: 10px; margin-bottom: 15px" > <%= post.title %> </h3>
+  <p style="margin: 0;color: black; margin: 15px;line-height: 22px" ><%= post.description %></p>
+  <p style="color: grey;display: inline;margin: 15px"><%= (post.created_at.strftime("%I:%M %p   %d/%m/%Y")) %></p>
+
   <%= render partial: "likes/like", locals: { post: post } %>
 </div>
 <%end%>

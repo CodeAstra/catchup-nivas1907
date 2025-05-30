@@ -1,8 +1,13 @@
-<%= turbo_frame_tag "like_#{post.id}" do %>
-  <% if like=post.likes.find_by(user_id:current_user) %>
-    <%= button_to "❤️", post_like_path( post_id: post, id: like.id ), method: :delete %>
-  <%else %>
-    <%= button_to "🤍", post_likes_path(post), method: :post %>
-  <% end %>
-  <p style="margin: 0px">Likes count <%= post.likes_count %></p>
-<% end %>
+ <%= turbo_frame_tag "like_#{post.id}" do %>
+<div class="like-action" style = "display:flex; align-items: center; gap: 4px; margin-top: 5px; background: none; border:none" >
+ 
+    <% if like=post.likes.find_by(user_id:current_user) %>
+      <%= button_to "❤️", post_like_path( post_id: post, id: like.id ), method: :delete %>
+    <%else %>
+      <%= button_to "🤍", post_likes_path(post), method: :post %>
+    <% end %>
+    <p style="margin: 0px"><%= post.likes_count %></p>
+ 
+</div>
+ <% end %>
+  

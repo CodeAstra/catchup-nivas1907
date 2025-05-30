@@ -1,13 +1,3 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
-# db/seeds.rb
 require 'faker'
 
 puts "Cleaning up database..."
@@ -17,12 +7,16 @@ Friendship.delete_all
 User.delete_all
 
 puts "Creating users..."
-users = 50.times.map do
+users = 200.times.map do
+  full_name = Faker::Name.unique.name
+  username = full_name.downcase.gsub(/\s+/, "_").gsub(/[^a-z0-9_]/, "")
+  email = "#{username}@example.com"
   User.create!(
-    email: Faker::Internet.unique.email,
-    username: Faker::Internet.username,
+    email: email,
+    username: full_name,
     password: "password",
-    privacy_status: User.privacy_statuses.keys.sample
+    privacy_status: User.privacy_statuses.keys.sample,
+    daily_digest: [ true, false ].sample
   )
 end
 
@@ -37,11 +31,11 @@ end
 
 puts "Creating posts..."
 users.each do |user|
-  rand(5..10).times do
+  150.times do
     Post.create!(
       user: user,
-      title: Faker::Lorem.sentence(word_count: 3),
-      description: Faker::Lorem.paragraph(sentence_count: 2)
+      title: Faker::Marketing.buzzwords.titleize,
+      description: Faker::TvShows::GameOfThrones.quote
     )
   end
 end
@@ -49,7 +43,7 @@ end
 puts "Creating friendships..."
 user_ids = users.map(&:id)
 users.each do |user|
-  friend_ids = user_ids.sample(rand(5..10)) - [user.id]
+  friend_ids = user_ids.sample(rand(10..30)) - [ user.id ]
   friend_ids.each do |fid|
     next if Friendship.exists?(sender_id: user.id, reciver_id: fid) || Friendship.exists?(sender_id: fid, reciver_id: user.id)
     Friendship.create!(sender_id: user.id, reciver_id: fid, friendship_status: :accepted)
@@ -58,9 +52,18 @@ end
 
 puts "Creating likes on friends' posts..."
 users.each do |user|
-  friend_ids = user.accepted_friends_ids
-  Post.where(user_id: friend_ids).sample(rand(10..20)).each do |post|
-    Like.create!(post: post)
+  if user.respond_to?(:accepted_friends_ids)
+    friend_ids = user.accepted_friends_ids
+  else
+    friend_ids = Friendship.where(sender_id: user.id).pluck(:reciver_id) +
+                 Friendship.where(reciver_id: user.id).pluck(:sender_id)
+  end
+
+  next if friend_ids.empty?
+
+  Post.where(user_id: friend_ids).sample(50).each do |post|
+    Like.find_or_create_by!(user_id: user.id, post_id: post.id)
   end
 end
 
+puts "Seeding complete! 🎉"
